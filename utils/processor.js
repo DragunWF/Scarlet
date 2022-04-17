@@ -3,22 +3,27 @@ import fs from "fs";
 import PingCommand from "../commands/ping.js";
 import HelpCommand from "../commands/help.js";
 import InfoCommand from "../commands/info.js";
+import CryptoCommand from "../commands/crypto.js";
 
 const ping = new PingCommand();
 const help = new HelpCommand();
 const info = new InfoCommand();
+const crypto = new CryptoCommand();
 
 // The purpose of command executions is to map command objects with a function to call
-const commands = JSON.parse(fs.readFileSync("./data/commands.json"));
+const commands = JSON.parse(fs.readFileSync("./config/commands.json"));
 const commandExecutions = [
   { name: "ping", call: ping.getBotLatency, object: ping },
   { name: "help", call: help.processHelpCommand, object: help },
   { name: "info", call: info.getBotInformation, object: info },
+  { name: "crypto", call: crypto.sendCryptoData, object: crypto },
 ];
 
 class CommandProcessor {
   static onReady(prefix) {
     ping.prefix = prefix;
+    help.prefix = prefix;
+    help.fillCommandList(commands);
     this.mapCommandExecutions();
   }
 
