@@ -9,7 +9,7 @@ const prefix = "!"; // Can be changed
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
-  client.user.setActivity("The Universe [!help]", {
+  client.user.setActivity("DragunWF [!help]", {
     type: "WATCHING",
   });
   CommandProcessor.onReady(prefix);
