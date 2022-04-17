@@ -8,9 +8,8 @@ class HelpCommand extends Command {
   }
 
   fillCommandList(commands) {
-    for (let command of commands) {
+    for (let command of commands)
       this.commandList.push({ name: command.name, hasArgs: command.hasArgs });
-    }
   }
 
   concatenateCommands() {

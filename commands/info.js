@@ -1,7 +1,7 @@
 import Command from "../utils/command.js";
 
 const description = `
-Hello! This is a discord bot written in JavaScript. Made by \`DragonWF#9321\`
+Hello! This is a discord bot written in JavaScript. Made by \`DragonWF#9321\`.
 This bot is specifically made for personal use and nothing else.
 `;
 

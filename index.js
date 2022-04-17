@@ -11,7 +11,7 @@ const prefix = "s!"; // Can be changed
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
-  client.user.setActivity(`My Master`, {
+  client.user.setActivity(`My Master [${prefix}help]`, {
     type: "WATCHING",
   });
   CommandProcessor.onReady(prefix);
