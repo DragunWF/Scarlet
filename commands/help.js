@@ -1,33 +1,34 @@
 import Command from "../utils/command.js";
 
 class HelpCommand extends Command {
-  constructor(prefix) {
+  constructor() {
     super();
     this.prefix = null;
     this.commandList = [];
   }
 
   fillCommandList(commands) {
-    console.log(commands);
     for (let command of commands) {
-      this.commandList.push(command.name);
+      this.commandList.push({ name: command.name, hasArgs: command.hasArgs });
     }
   }
 
-  concatenateCommands(hasArgs, initial = null) {
-    let output = "";
-    for (let item of this.commandList) {
-      if (hasArgs) output += `- \`${this.prefix}${initial} ${item}\`\n`;
-      else output += `- \`${this.prefix}${item}\`\n`;
+  concatenateCommands() {
+    let withArgs = "";
+    let noArgs = "";
+    for (let command of this.commandList) {
+      if (command.hasArgs)
+        withArgs += `- \`${this.prefix}${command.name} <argument>\`\n`;
+      else noArgs += `- \`${this.prefix}${command.name}\`\n`;
     }
-    return output;
+    return `**Regular Commands:**\n${noArgs}\n**Commands With Arguments:**\n${withArgs}`;
   }
 
   processHelpCommand(object, message) {
     const embed = new object.MessageEmbed()
       .setColor(object.mainColor)
       .setTitle("List of commands")
-      .setDescription(object.concatenateCommands(false))
+      .setDescription(object.concatenateCommands())
       .setFooter({ text: "Have fun!" });
     message.channel.send({ embeds: [embed] });
   }
