@@ -1,17 +1,30 @@
-// import DatabaseTool from "./db-tool.js";
+import DatabaseTool from "./db-tool.js";
 
-class Logger {
-  logCreatedMessage() {
+class MessageLogger {
+  static validateMessageContent(content) {
+    if (!content.length > 1) return false;
+    if (content.length < 10) {
+      const uniqueCount = [...new Set(content.split(""))].filter((element) => {
+        if (element === " ") return element;
+      }).length;
+      if (!uniqueCount > 1) return false;
+    }
+    return true;
+  }
+
+  static logCreatedMessage(message) {
+    if (this.validateMessageContent) {
+      DatabaseTool.insertCreatedMessage(message);
+    }
+  }
+
+  static logDeletedMessage(message) {
     //
   }
 
-  logDeletedMessage() {
-    //
-  }
-
-  logEditedMessage() {
+  static logEditedMessage(before, after) {
     //
   }
 }
 
-export default Logger;
+export default MessageLogger;
