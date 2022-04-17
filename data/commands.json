@@ -1,0 +1,23 @@
+[
+  {
+    "name": "help",
+    "alias": ["help"],
+    "hasArgs": false,
+    "execution": null,
+    "object": null
+  },
+  {
+    "name": "ping",
+    "alias": ["ping", "latency"],
+    "hasArgs": false,
+    "execution": null,
+    "object": null
+  },
+  {
+    "name": "info",
+    "alias": ["info", "information"],
+    "hasArgs": false,
+    "execution": null,
+    "object": null
+  }
+]
