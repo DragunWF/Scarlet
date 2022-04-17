@@ -1,14 +1,22 @@
 import Command from "../utils/command.js";
 
 class HelpCommand extends Command {
-  constructor() {
+  constructor(prefix) {
     super();
     this.prefix = null;
+    this.commandList = [];
   }
 
-  concatenateCommands(array, hasArgs, initial = null) {
+  fillCommandList(commands) {
+    console.log(commands);
+    for (let command of commands) {
+      this.commandList.push(command.name);
+    }
+  }
+
+  concatenateCommands(hasArgs, initial = null) {
     let output = "";
-    for (let item of array) {
+    for (let item of this.commandList) {
       if (hasArgs) output += `- \`${this.prefix}${initial} ${item}\`\n`;
       else output += `- \`${this.prefix}${item}\`\n`;
     }
@@ -16,12 +24,11 @@ class HelpCommand extends Command {
   }
 
   processHelpCommand(object, message) {
-    const commandList = ["ping", "info"];
     const embed = new object.MessageEmbed()
       .setColor(object.mainColor)
       .setTitle("List of commands")
-      .setDescription(object.concatenateCommands(commandList, false))
-      .setFooter({ text: "Welcome!" });
+      .setDescription(object.concatenateCommands(false))
+      .setFooter({ text: "Have fun!" });
     message.channel.send({ embeds: [embed] });
   }
 }
