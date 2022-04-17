@@ -16,7 +16,7 @@ class KeywordResponder {
   }
 
   static checkIfCanExecute(keywordObject) {
-    const canExecute = false;
+    let canExecute = false;
     if (keywordObject.timesToExecute % keywordObject.timesMentioned == 0)
       canExecute = true;
     data[data.indexOf(keywordObject)].timesMentioned++;
