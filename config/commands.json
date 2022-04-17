@@ -26,5 +26,19 @@
     "hasArgs": true,
     "execution": null,
     "object": null
+  },
+  {
+    "name": "snipe",
+    "alias": ["snipe"],
+    "hasArgs": false,
+    "execution": null,
+    "object": null
+  },
+  {
+    "name": "esnipe",
+    "alias": ["esnipe", "editsnipe"],
+    "hasArgs": true,
+    "execution": null,
+    "object": null
   }
 ]
