@@ -3,10 +3,13 @@
     "keywords": ["dragon", "dragonwf", "dragunwf", "dragun", "dragone"],
     "useReply": true,
     "hasReaction": false,
-    "responses": [
-      "Hmm... Interesting",
-      "I wonder what you peeps are talking about.."
-    ],
+    "responses": {
+      "phrases": [
+        "Hmm... Interesting",
+        "I wonder what you peeps are talking about.."
+      ],
+      "emojis": []
+    },
     "timesToExecute": 8,
     "timesMentioned": 0
   },
@@ -14,12 +17,15 @@
     "keywords": ["scarlet"],
     "useReply": true,
     "hasReaction": false,
-    "responses": [
-      "My name has been mentioned, interesting...",
-      "How may I serve you today?",
-      "Somebody said my name... I wonder what they talked about."
-    ],
-    "timesToExecute": 8,
+    "responses": {
+      "phrases": [
+        "My name has been mentioned, interesting...",
+        "How may I serve you today?",
+        "Somebody said my name... I wonder what they talked about."
+      ],
+      "emojis": []
+    },
+    "timesToExecute": 1,
     "timesMentioned": 0
   },
   {
