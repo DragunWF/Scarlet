@@ -1,7 +1,7 @@
 {
-  "name": "discord-bot-template",
+  "name": "scarlet",
   "version": "1.0.0",
-  "description": "My personal template used for starting the development of a discord bot",
+  "description": "A discord bot for my personal use.",
   "main": "src/main.js",
   "type": "module",
   "scripts": {
@@ -9,10 +9,11 @@
   },
   "keywords": [],
   "author": "DragunWF",
-  "license": "MIT",
+  "license": "All Rights Reserved",
   "dependencies": {
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "mysql": "^2.18.1"
   }
 }
