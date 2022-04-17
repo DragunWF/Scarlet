@@ -1,17 +1,26 @@
 import fs from "fs";
 
-const data = JSON.parse(fs.readFileSync("../config/keywords.json"));
+const data = JSON.parse(fs.readFileSync("./config/keywords.json"));
 
-class KeyWordResponder {
-  static checkForKeyWord(message) {
+class KeywordResponder {
+  static checkForKeyword(message) {
     for (let word of message.content.split(" ")) {
       for (let object of data) {
         if (object.keywords.includes(word)) {
-          this.respondToMessage(message, object);
+          if (this.checkIfCanExecute(object))
+            this.respondToMessage(message, object);
           return;
         }
       }
     }
+  }
+
+  static checkIfCanExecute(keywordObject) {
+    const canExecute = false;
+    if (keywordObject.timesToExecute % keywordObject.timesMentioned == 0)
+      canExecute = true;
+    data[data.indexOf(keywordObject)].timesMentioned++;
+    return canExecute;
   }
 
   static isReactionResponse(keywordObject) {
@@ -29,8 +38,8 @@ class KeyWordResponder {
     return false;
   }
 
-  static chooseResponse(keywordObject, reaction) {
-    const responses = reaction
+  static chooseResponse(keywordObject, isReaction) {
+    const responses = isReaction
       ? keywordObject.responses.emojis
       : keywordObject.responses.phrases;
     return responses[Math.floor(Math.random() * responses.length)];
@@ -38,9 +47,11 @@ class KeyWordResponder {
 
   static respondToMessage(message, keywordObject) {
     const isReaction = this.isReactionResponse(keywordObject);
-    const response = chooseResponse(keywordObject, isReaction);
+    const response = this.chooseResponse(keywordObject, isReaction);
     if (isReaction) message.react(response);
     else if (keywordObject.useReply) message.reply(response);
     else message.channel.send(response);
   }
 }
+
+export default KeywordResponder;
