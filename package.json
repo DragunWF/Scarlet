@@ -2,10 +2,10 @@
   "name": "scarlet",
   "version": "1.0.0",
   "description": "A discord bot for my personal use.",
-  "main": "src/main.js",
+  "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node src/main.js"
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "DragunWF",
