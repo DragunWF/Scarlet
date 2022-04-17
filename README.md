@@ -1,7 +1,5 @@
-# Bot Template
+# Scarlet
 
-### Description:
+## Description:
 
-- Hello! This is a discord bot made for my own convenience. Made to be used with Replit.
-- I'm going to add more to this `README` file in the future. Like instructions and notes on the command
-  workflow.
+Hello! This is just a discord bot made for my own personal use.
