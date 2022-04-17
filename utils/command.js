@@ -23,7 +23,7 @@ const _mainColor = new WeakMap();
 class Command {
   constructor() {
     this.MessageEmbed = MessageEmbed;
-    _mainColor.set(this, "#9966cc");
+    _mainColor.set(this, "#E0115F");
   }
 
   get mainColor() {
