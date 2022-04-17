@@ -19,5 +19,12 @@
     "hasArgs": false,
     "execution": null,
     "object": null
+  },
+  {
+    "name": "crypto",
+    "alias": ["crypto", "nft"],
+    "hasArgs": true,
+    "execution": null,
+    "object": null
   }
 ]
