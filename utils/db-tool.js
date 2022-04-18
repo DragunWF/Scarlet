@@ -26,8 +26,15 @@ class DatabaseTool {
     const sqlQuery = "INSERT INTO messages SET ?";
     db.query(sqlQuery, content, (err, results) => {
       if (err) console.log(err);
-      console.log("Successful insert");
     });
+  }
+
+  static insertDeletedMessage(message) {
+    return;
+  }
+
+  static insertEditedMessage(before, after) {
+    return;
   }
 }
 
