@@ -37,7 +37,7 @@
   {
     "name": "esnipe",
     "alias": ["esnipe", "editsnipe"],
-    "hasArgs": true,
+    "hasArgs": false,
     "execution": null,
     "object": null
   }
