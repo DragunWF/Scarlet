@@ -23,6 +23,7 @@ client.on("messageCreate", (message) => {
     if (message.content.startsWith(prefix))
       CommandProcessor.processCommand(message, prefix);
     KeywordResponder.checkForKeyword(message);
+    MessageLogger.logCreatedMessage(message);
   } catch (error) {
     message.channel.send("**An unknown error has occured**");
     console.log(error);
