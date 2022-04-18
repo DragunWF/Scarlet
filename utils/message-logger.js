@@ -18,19 +18,22 @@ class MessageLogger {
   static logCreatedMessage(message) {
     if (this.validateMessageContent(message.content, true)) {
       lastMessageContent = message.content;
-      DatabaseTool.insertCreatedMessage(message);
+      DatabaseTool.insertMessageContent(message, "messageCreate");
     }
   }
 
   static logDeletedMessage(message) {
     if (this.validateMessageContent(message.content)) {
-      DatabaseTool.insertDeletedMessage(message);
+      DatabaseTool.insertMessageContent(message, "messageDelete");
     }
   }
 
   static logEditedMessage(before, after) {
     if (this.validateMessageContent(after.content)) {
-      DatabaseTool.insertEditedMessage(before, after);
+      DatabaseTool.insertMessageContent(
+        { before: before, after: after },
+        "messageUpdate"
+      );
     }
   }
 }
