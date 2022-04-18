@@ -30,6 +30,7 @@ class DatabaseTool {
   }
 
   static insertDeletedMessage(message) {
+    const datetime = new Date().toISOString().split("T");
     const content = {
       message_id: message.id,
       guild_id: message.guildId,
@@ -39,15 +40,18 @@ class DatabaseTool {
       date_deleted: datetime[0],
       time_deleted: datetime[1].split(".")[0],
     };
-    const sqlQuery = `
-    CALL on_message_state_update(${message.id});
-    INSERT INTO deleted_messages SET ?`;
-    db.query(sqlQuery, content, (err, results) => {
+    const sqlInsertQuery = "INSERT INTO deleted_messages SET ?";
+    const sqlCallQuery = `CALL on_message_state_update(${message.id});`;
+    db.query(sqlCallQuery, (err, results) => {
+      if (err) console.error(err);
+    });
+    db.query(sqlInsertQuery, content, (err, results) => {
       if (err) console.log(err);
     });
   }
 
   static insertEditedMessage(before, after) {
+    const datetime = new Date().toISOString().split("T");
     const content = {
       message_id: after.id,
       guild_id: after.guildId,
@@ -58,10 +62,12 @@ class DatabaseTool {
       date_edited: datetime[0],
       time_edited: datetime[1].split(".")[0],
     };
-    const sqlQuery = `
-    CALL on_message_state_update(${before.id});
-    INSERT INTO edited_messages SET ?`;
-    db.query(sqlQuery, content, (err, results) => {
+    const sqlInsertQuery = "INSERT INTO edited_messages SET ?";
+    const sqlCallQuery = `CALL on_message_state_update(${before.id});`;
+    db.query(sqlCallQuery, (err, results) => {
+      if (err) console.error(err);
+    });
+    db.query(sqlInsertQuery, content, (err, results) => {
       if (err) console.log(err);
     });
   }
