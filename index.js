@@ -32,7 +32,7 @@ client.on("messageCreate", (message) => {
 client.on("messageDelete", (message) => {
   try {
     if (message.author.bot) return;
-    // Add code here
+    CommandProcessor.modifySnipeCommand(true, message);
   } catch (error) {
     console.log(error);
   }
@@ -41,7 +41,10 @@ client.on("messageDelete", (message) => {
 client.on("messageUpdate", (oldMessage, newMessage) => {
   try {
     if (oldMessage.author.bot) return;
-    // Add code here
+    CommandProcessor.modifySnipeCommand(false, {
+      before: oldMessage,
+      after: newMessage,
+    });
   } catch (error) {
     console.log(error);
   }
