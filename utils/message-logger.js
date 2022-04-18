@@ -23,12 +23,14 @@ class MessageLogger {
   }
 
   static logDeletedMessage(message) {
-    //
+    if (this.validateMessageContent(message.content)) {
+      DatabaseTool.insertDeletedMessage(message);
+    }
   }
 
   static logEditedMessage(before, after) {
     if (this.validateMessageContent(after.content)) {
-      return;
+      DatabaseTool.insertEditedMessage(before, after);
     }
   }
 }
