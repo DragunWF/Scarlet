@@ -1,7 +1,10 @@
 import DatabaseTool from "./db-tool.js";
 
+let lastMessageContent = null;
+
 class MessageLogger {
-  static validateMessageContent(content) {
+  static validateMessageContent(content, isMessageCreate = false) {
+    if (isMessageCreate && content === lastMessageContent) return false;
     if (!(content.length > 1)) return false;
     if (content.length < 10) {
       const uniqueCount = [...new Set(content.split(""))].filter((element) => {
@@ -9,12 +12,12 @@ class MessageLogger {
       }).length;
       if (!(uniqueCount > 1)) return false;
     }
-    console.log("passed");
     return true;
   }
 
   static logCreatedMessage(message) {
-    if (this.validateMessageContent(message.content)) {
+    if (this.validateMessageContent(message.content, true)) {
+      lastMessageContent = message.content;
       DatabaseTool.insertCreatedMessage(message);
     }
   }
@@ -24,7 +27,9 @@ class MessageLogger {
   }
 
   static logEditedMessage(before, after) {
-    //
+    if (this.validateMessageContent(after.content)) {
+      return;
+    }
   }
 }
 
