@@ -1,4 +1,4 @@
-import "dovenv/config";
+import "dotenv/config";
 import mysql from "mysql";
 
 const db = mysql.createPool({
@@ -9,10 +9,25 @@ const db = mysql.createPool({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
 });
+console.log("Database has been connected successfully!");
 
 class DatabaseTool {
   static insertCreatedMessage(message) {
-    //
+    const datetime = new Date().toISOString().split("T");
+    const content = {
+      message_id: message.id,
+      guild_id: message.guildId,
+      author_id: message.author.id,
+      author_tag: message.author.tag,
+      message_content: message.content,
+      date_sent: datetime[0],
+      time_sent: datetime[1].split(".")[0],
+    };
+    const sqlQuery = "INSERT INTO messages SET ?";
+    db.query(sqlQuery, content, (err, results) => {
+      if (err) console.log(err);
+      console.log("Successful insert");
+    });
   }
 }
 
