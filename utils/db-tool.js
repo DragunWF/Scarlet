@@ -30,7 +30,22 @@ class DatabaseTool {
   }
 
   static insertDeletedMessage(message) {
-    return;
+    const content = {
+      message_id: message.id,
+      guild_id: message.guildId,
+      author_id: message.author.id,
+      author_tag: message.author.tag,
+      message_content: message.content,
+      date_deleted: datetime[0],
+      time_deleted: datetime[1].split(".")[0],
+    };
+    const sqlQuery = `
+    CALL on_message_state_update(${message.id});
+    INSERT INTO deleted_messages SET ?
+    `;
+    db.query(sqlQuery, content, (err, results) => {
+      if (err) console.log(err);
+    });
   }
 
   static insertEditedMessage(before, after) {
