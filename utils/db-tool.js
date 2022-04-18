@@ -59,12 +59,10 @@ class DatabaseTool {
     const sqlQuery = `INSERT INTO ${table} SET ?`;
 
     if (type === "messageDelete" || type === "messageUpdate") {
-      db.query(
-        `CALL on_message_state_update(${message.id});`,
-        (err, results) => {
-          if (err) console.error(err);
-        }
-      );
+      const id = type === "messageUpdate" ? message.before.id : message.id;
+      db.query(`CALL on_message_state_update(${id});`, (err, results) => {
+        if (err) console.error(err);
+      });
     }
 
     db.query(sqlQuery, content, (err, results) => {
