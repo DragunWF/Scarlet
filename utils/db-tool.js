@@ -53,9 +53,10 @@ class DatabaseTool {
       guild_id: after.guildId,
       author_id: after.author.id,
       author_tag: after.author.tag,
-      message_content: before.content,
-      date_deleted: datetime[0],
-      time_deleted: datetime[1].split(".")[0],
+      before_edit_content: before.content,
+      after_edit_content: after.content,
+      date_edited: datetime[0],
+      time_edited: datetime[1].split(".")[0],
     };
     const sqlQuery = `
     CALL on_message_state_update(${before.id});
