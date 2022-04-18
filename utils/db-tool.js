@@ -41,15 +41,28 @@ class DatabaseTool {
     };
     const sqlQuery = `
     CALL on_message_state_update(${message.id});
-    INSERT INTO deleted_messages SET ?
-    `;
+    INSERT INTO deleted_messages SET ?`;
     db.query(sqlQuery, content, (err, results) => {
       if (err) console.log(err);
     });
   }
 
   static insertEditedMessage(before, after) {
-    return;
+    const content = {
+      message_id: after.id,
+      guild_id: after.guildId,
+      author_id: after.author.id,
+      author_tag: after.author.tag,
+      message_content: before.content,
+      date_deleted: datetime[0],
+      time_deleted: datetime[1].split(".")[0],
+    };
+    const sqlQuery = `
+    CALL on_message_state_update(${before.id});
+    INSERT INTO edited_messages SET ?`;
+    db.query(sqlQuery, content, (err, results) => {
+      if (err) console.log(err);
+    });
   }
 }
 
