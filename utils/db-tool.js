@@ -12,62 +12,62 @@ const db = mysql.createPool({
 console.log("Database has been connected successfully!");
 
 class DatabaseTool {
-  static insertCreatedMessage(message) {
+  static insertMessageContent(message, type) {
     const datetime = new Date().toISOString().split("T");
-    const content = {
-      message_id: message.id,
-      guild_id: message.guildId,
-      author_id: message.author.id,
-      author_tag: message.author.tag,
-      message_content: message.content,
-      date_sent: datetime[0],
-      time_sent: datetime[1].split(".")[0],
-    };
-    const sqlQuery = "INSERT INTO messages SET ?";
+    let table = null;
+    let content = null;
+
+    switch (type) {
+      case "messageCreate":
+        content = {
+          message_id: message.id,
+          guild_id: message.guildId,
+          author_id: message.author.id,
+          author_tag: message.author.tag,
+          message_content: message.content,
+          date_sent: datetime[0],
+          time_sent: datetime[1].split(".")[0],
+        };
+        table = "messages";
+        break;
+      case "messageDelete":
+        content = {
+          message_id: message.id,
+          guild_id: message.guildId,
+          author_id: message.author.id,
+          author_tag: message.author.tag,
+          message_content: message.content,
+          date_deleted: datetime[0],
+          time_deleted: datetime[1].split(".")[0],
+        };
+        table = "deleted_messages";
+        break;
+      case "messageUpdate":
+        content = {
+          message_id: message.after.id,
+          guild_id: message.after.guildId,
+          author_id: message.after.author.id,
+          author_tag: message.after.author.tag,
+          before_edit_content: message.before.content,
+          after_edit_content: message.after.content,
+          date_edited: datetime[0],
+          time_edited: datetime[1].split(".")[0],
+        };
+        table = "edited_messages";
+        break;
+    }
+    const sqlQuery = `INSERT INTO ${table} SET ?`;
+
+    if (type === "messageDelete" || type === "messageUpdate") {
+      db.query(
+        `CALL on_message_state_update(${message.id});`,
+        (err, results) => {
+          if (err) console.error(err);
+        }
+      );
+    }
+
     db.query(sqlQuery, content, (err, results) => {
-      if (err) console.log(err);
-    });
-  }
-
-  static insertDeletedMessage(message) {
-    const datetime = new Date().toISOString().split("T");
-    const content = {
-      message_id: message.id,
-      guild_id: message.guildId,
-      author_id: message.author.id,
-      author_tag: message.author.tag,
-      message_content: message.content,
-      date_deleted: datetime[0],
-      time_deleted: datetime[1].split(".")[0],
-    };
-    const sqlInsertQuery = "INSERT INTO deleted_messages SET ?";
-    const sqlCallQuery = `CALL on_message_state_update(${message.id});`;
-    db.query(sqlCallQuery, (err, results) => {
-      if (err) console.error(err);
-    });
-    db.query(sqlInsertQuery, content, (err, results) => {
-      if (err) console.log(err);
-    });
-  }
-
-  static insertEditedMessage(before, after) {
-    const datetime = new Date().toISOString().split("T");
-    const content = {
-      message_id: after.id,
-      guild_id: after.guildId,
-      author_id: after.author.id,
-      author_tag: after.author.tag,
-      before_edit_content: before.content,
-      after_edit_content: after.content,
-      date_edited: datetime[0],
-      time_edited: datetime[1].split(".")[0],
-    };
-    const sqlInsertQuery = "INSERT INTO edited_messages SET ?";
-    const sqlCallQuery = `CALL on_message_state_update(${before.id});`;
-    db.query(sqlCallQuery, (err, results) => {
-      if (err) console.error(err);
-    });
-    db.query(sqlInsertQuery, content, (err, results) => {
       if (err) console.log(err);
     });
   }
