@@ -21,7 +21,7 @@ client.on("messageCreate", (message) => {
   try {
     if (message.author.bot) return;
     if (message.content.startsWith(prefix))
-      CommandProcessor.processCommand(message, prefix);
+      CommandProcessor.processCommand(message, client, prefix);
     KeywordResponder.checkForKeyword(message);
     MessageLogger.logCreatedMessage(message);
   } catch (error) {
