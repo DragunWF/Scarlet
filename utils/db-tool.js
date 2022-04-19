@@ -80,16 +80,64 @@ class DatabaseTool {
     }
     const sqlQuery = `INSERT INTO ${table} SET ?`;
 
+    this.checkForUpdates(message, type);
+    db.query(sqlQuery, content, (err, results) => {
+      if (err) console.log(err);
+    });
+  }
+
+  static checkForNewInfo(message) {
+    const queries = [
+      {
+        select: `SELECT * FROM guilds WHERE guild_id = ${message.guildId}`,
+        table: "guilds",
+        content: {
+          guild_id: message.guildId,
+          guild_name: message.guildName,
+        },
+      },
+      {
+        select: `SELECT * FROM users WHERE author_id = ${message.author.id}`,
+        table: "users",
+        content: {
+          author_id: message.author.id,
+          author_tag: message.author.tag,
+        },
+      },
+      {
+        select: `SELECT * FROM channels WHERE channel_id = ${message.channel.id}`,
+        table: "channels",
+        content: {
+          guild_id: message.guildId,
+          channel_id: message.channel.id,
+          channel_name: message.channel.name,
+        },
+      },
+    ];
+
+    for (let query of queries) {
+      db.query(query.select, (err, results) => {
+        if (err) console.log(err);
+        if (!results.length) {
+          db.query(
+            `INSERT INTO ${query.table} SET ?`,
+            query.content,
+            (err, results) => {
+              if (err) console.log(err);
+            }
+          );
+        }
+      });
+    }
+  }
+
+  static checkForUpdates(message, type) {
     if (type === "messageDelete" || type === "messageUpdate") {
       const id = type === "messageUpdate" ? message.before.id : message.id;
       db.query(`CALL on_message_state_update(${id});`, (err, results) => {
         if (err) console.log(err);
       });
     }
-
-    db.query(sqlQuery, content, (err, results) => {
-      if (err) console.log(err);
-    });
   }
 }
 
