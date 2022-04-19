@@ -130,33 +130,45 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 ----------------------------------------------------
 CREATE OR REPLACE VIEW simple_messages AS
 SELECT
-	u.author_tag AS name,
+	u.author_tag AS user,
+  g.guild_name AS guild,
+  c.channel_name AS channel,
   m.message_content AS content,
   m.date_sent,
   m.time_sent
 FROM messages m
 JOIN users u USING (author_id)
+JOIN guilds g USING (guild_id)
+JOIN channels c USING (channel_id)
 ORDER BY time_sent, date_sent DESC;
 
 CREATE OR REPLACE VIEW simple_deleted_messages AS
 SELECT
-	u.author_tag AS name,
+	u.author_tag AS user,
+  g.guild_name AS guild,
+  c.channel_name AS channel,
   dm.message_content AS content,
   dm.date_deleted,
   dm.time_deleted
 FROM deleted_messages dm
 JOIN users u USING (author_id)
+JOIN guilds g USING (guild_id)
+JOIN channels c USING (channel_id)
 ORDER BY time_deleted, date_deleted DESC;
 
 CREATE OR REPLACE VIEW simple_edited_messages AS
 SELECT
-	u.author_tag AS name,
+	u.author_tag AS user,
+  g.guild_name AS guild,
+  c.channel_name AS channel,
   em.before_edit_content AS before_edit,
   em.after_edit_content AS after_edit,
   em.date_edited,
   em.time_edited
 FROM edited_messages em
 JOIN users u USING (author_id)
+JOIN guilds g USING (guild_id)
+JOIN channels c USING (channel_id)
 ORDER BY time_edited, date_edited DESC;
 
 ----------------------------------------------------
@@ -201,11 +213,11 @@ CREATE PROCEDURE update_guild_status
 )
 BEGIN
 	UPDATE guilds g
-    SET status = "deleted"
-    WHERE g.guild_id = guild_id;
-    
-    DELETE FROM channels
-    WHERE g.guild_id = guild_id;
+  SET status = "deleted"
+  WHERE g.guild_id = guild_id;
+  
+  DELETE FROM channels
+  WHERE g.guild_id = guild_id;
 END $$
 
 CREATE PROCEDURE update_user_tag
@@ -226,9 +238,9 @@ CREATE EVENT monthly_clear_logs
 ON SCHEDULE
 	EVERY 1 MONTH STARTS "2022-01-01"
 DO BEGIN
-	TRUNCATE messages;
-  TRUNCATE deleted_messages;
-  TRUNCATE edited_messages;
+	DELETE FROM messages;
+  DELETE FROM deleted_messages;
+  DELETE FROM edited_messages;
 END $$
 
 DELIMITER ;
