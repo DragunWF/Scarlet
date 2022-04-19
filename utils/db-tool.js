@@ -17,14 +17,14 @@ class DatabaseTool {
     let table = null;
     let content = null;
 
-    this.checkForNewInfo();
+    this.queryNewInfo();
     switch (type) {
       case "messageCreate":
         content = {
           message_id: message.id,
           guild_id: message.guildId,
+          channel_id: message.channel.id,
           author_id: message.author.id,
-          author_tag: message.author.tag,
           message_content: message.content,
           date_sent: datetime[0],
           time_sent: datetime[1].split(".")[0],
@@ -35,8 +35,8 @@ class DatabaseTool {
         content = {
           message_id: message.id,
           guild_id: message.guildId,
+          channel_id: message.channel.id,
           author_id: message.author.id,
-          author_tag: message.author.tag,
           message_content: message.content,
           date_deleted: datetime[0],
           time_deleted: datetime[1].split(".")[0],
@@ -47,8 +47,8 @@ class DatabaseTool {
         content = {
           message_id: message.after.id,
           guild_id: message.after.guildId,
+          channel_id: message.after.channel.id,
           author_id: message.after.author.id,
-          author_tag: message.after.author.tag,
           before_edit_content: message.before.content,
           after_edit_content: message.after.content,
           date_edited: datetime[0],
@@ -59,13 +59,13 @@ class DatabaseTool {
     }
     const sqlQuery = `INSERT INTO ${table} SET ?`;
 
-    this.checkForUpdates(message, type);
+    this.queryNewUpdates(message, type);
     db.query(sqlQuery, content, (err, results) => {
       if (err) console.log(err);
     });
   }
 
-  static checkForNewInfo(message) {
+  static queryNewInfo(message) {
     const queries = [
       {
         select: `SELECT * FROM guilds WHERE guild_id = ${message.guildId}`,
@@ -110,7 +110,7 @@ class DatabaseTool {
     }
   }
 
-  static checkForUpdates(message, type) {
+  static queryNewUpdates(message, type) {
     if (type === "messageDelete" || type === "messageUpdate") {
       const id = type === "messageUpdate" ? message.before.id : message.id;
       db.query(`CALL on_message_state_update(${id});`, (err, results) => {
