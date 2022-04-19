@@ -45,4 +45,3 @@ class MessageLogger {
 }
 
 export default MessageLogger;
- 
