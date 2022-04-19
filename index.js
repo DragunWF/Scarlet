@@ -1,5 +1,6 @@
 import "dotenv/config";
 import Discord from "discord.js";
+import fs from "fs";
 
 import CommandProcessor from "./utils/processor.js";
 import keepServerRunning from "./utils/server.js";
@@ -7,14 +8,14 @@ import MessageLogger from "./utils/message-logger.js";
 import KeywordResponder from "./utils/keyword-responder.js";
 
 const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
-const prefix = "s!"; // Can be changed
+const prefix = JSON.parse(fs.readFileSync("./config/bot.json"))[0].prefix;
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
   client.user.setActivity(`My Master [${prefix}help]`, {
     type: "WATCHING",
   });
-  CommandProcessor.onReady(prefix);
+  CommandProcessor.onReady();
 });
 
 client.on("messageCreate", (message) => {
