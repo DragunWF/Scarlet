@@ -3,6 +3,8 @@
     "name": "help",
     "alias": ["help"],
     "hasArgs": false,
+    "hasClientObject": false,
+    "rulerCommand": false,
     "execution": null,
     "object": null
   },
@@ -10,6 +12,8 @@
     "name": "ping",
     "alias": ["ping", "latency"],
     "hasArgs": false,
+    "hasClientObject": false,
+    "rulerCommand": false,
     "execution": null,
     "object": null
   },
@@ -17,6 +21,8 @@
     "name": "info",
     "alias": ["info", "information"],
     "hasArgs": false,
+    "hasClientObject": false,
+    "rulerCommand": false,
     "execution": null,
     "object": null
   },
@@ -24,6 +30,8 @@
     "name": "crypto",
     "alias": ["crypto", "nft"],
     "hasArgs": true,
+    "hasClientObject": false,
+    "rulerCommand": false,
     "execution": null,
     "object": null
   },
@@ -31,6 +39,8 @@
     "name": "snipe",
     "alias": ["snipe"],
     "hasArgs": false,
+    "hasClientObject": false,
+    "rulerCommand": false,
     "execution": null,
     "object": null
   },
@@ -38,6 +48,26 @@
     "name": "esnipe",
     "alias": ["esnipe", "editsnipe"],
     "hasArgs": false,
+    "hasClientObject": false,
+    "rulerCommand": false,
+    "execution": null,
+    "object": null
+  },
+  {
+    "name": "chat",
+    "alias": ["chat", "send"],
+    "hasArgs": false,
+    "hasClientObject": true,
+    "rulerCommand": true,
+    "execution": null,
+    "object": null
+  },
+  {
+    "name": "channel",
+    "alias": ["channel", "set", "setchannel"],
+    "hasArgs": false,
+    "hasClientObject": true,
+    "rulerCommand": true,
     "execution": null,
     "object": null
   }
