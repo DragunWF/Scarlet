@@ -17,3 +17,6 @@ DROP PROCEDURE IF EXISTS update_guild_status;
 DROP PROCEDURE IF EXISTS update_guild_name;
 DROP PROCEDURE IF EXISTS update_user_tag;
 DROP PROCEDURE IF EXISTS update_channel_name;
+
+-- Drop all events
+DROP EVENT IF EXISTS monthly_clear_logs
