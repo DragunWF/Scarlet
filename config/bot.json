@@ -1,0 +1,12 @@
+[
+  {
+    "prefix": "s!",
+    "users": {
+      "master": "408972598798450688",
+      "authorized": ["408972598798450688"]
+    },
+    "guilds": {
+      "ignoreGuilds": [""]
+    }
+  }
+]
