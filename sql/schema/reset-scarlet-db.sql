@@ -3,8 +3,8 @@ DROP TABLE IF EXISTS messages;
 DROP TABLE IF EXISTS deleted_messages;
 DROP TABLE IF EXISTS edited_messages;
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS guilds;
 DROP TABLE IF EXISTS channels;
+DROP TABLE IF EXISTS guilds;
 
 -- Drop all views
 DROP VIEW IF EXISTS simple_messages;
