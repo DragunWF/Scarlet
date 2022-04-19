@@ -1,11 +1,17 @@
+import fs from "fs";
 import DatabaseTool from "./db-tool.js";
 
+const prefix = JSON.parse(fs.readFileSync("./config/bot.json"))[0].prefix;
 let lastMessageContent = null;
 
 class MessageLogger {
   static validateMessageContent(content, isMessageCreate = false) {
-    if (isMessageCreate && content === lastMessageContent) return false;
-    if (!(content.length > 1)) return false;
+    if (
+      !(content.length > 1) ||
+      (isMessageCreate && content.startsWith(prefix)) ||
+      (isMessageCreate && content === lastMessageContent)
+    )
+      return false;
     if (content.length < 10) {
       const uniqueCount = [...new Set(content.split(""))].filter((element) => {
         if (element !== " ") return element;
@@ -39,3 +45,4 @@ class MessageLogger {
 }
 
 export default MessageLogger;
+ 
