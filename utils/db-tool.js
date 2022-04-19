@@ -111,7 +111,31 @@ class DatabaseTool {
   }
 
   static queryNewUpdates(message, type) {
-    if (type === "messageDelete" || type === "messageUpdate") {
+    const messageEvents = ["messageCreate", "messageUpdate", "messageDelete"];
+    if (messageEvents.includes(type)) {
+      const id =
+        type === messageEvents[2]
+          ? message.before.author.id
+          : message.author.id;
+      const tag =
+        type === messageEvents[2]
+          ? message.before.author.tag
+          : message.author.tag;
+
+      db.query(
+        `SELECT * FROM users WHERE author_id = ${id}`,
+        (err, results) => {
+          const userTag = results[0].author_tag;
+          if (tag !== userTag) {
+            db.query(`CALL update_user_tag(${id}, ${tag})`, (err, results) => {
+              if (err) console.log(err);
+            });
+          }
+        }
+      );
+    }
+
+    if (type !== messageEvents[0] && messageEvents.includes(type)) {
       const id = type === "messageUpdate" ? message.before.id : message.id;
       db.query(`CALL on_message_state_update(${id});`, (err, results) => {
         if (err) console.log(err);
