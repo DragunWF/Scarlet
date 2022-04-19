@@ -23,8 +23,8 @@ CREATE TABLE IF NOT EXISTS bkwtrdqkijpbr852tmj3.channels (
   CONSTRAINT fk_channels_guilds
     FOREIGN KEY (guild_id)
     REFERENCES bkwtrdqkijpbr852tmj3.guilds (guild_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS bkwtrdqkijpbr852tmj3.users (
@@ -48,18 +48,18 @@ CREATE TABLE IF NOT EXISTS bkwtrdqkijpbr852tmj3.messages (
   CONSTRAINT fk_messages_channels1
     FOREIGN KEY (channel_id)
     REFERENCES bkwtrdqkijpbr852tmj3.channels (channel_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT fk_messages_guilds1
     FOREIGN KEY (guild_id)
     REFERENCES bkwtrdqkijpbr852tmj3.guilds (guild_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT fk_messages_users1
     FOREIGN KEY (author_id)
     REFERENCES bkwtrdqkijpbr852tmj3.users (author_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS bkwtrdqkijpbr852tmj3.deleted_messages (
@@ -77,18 +77,18 @@ CREATE TABLE IF NOT EXISTS bkwtrdqkijpbr852tmj3.deleted_messages (
   CONSTRAINT fk_deleted_messages_guilds1
     FOREIGN KEY (guild_id)
     REFERENCES bkwtrdqkijpbr852tmj3.guilds (guild_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT fk_deleted_messages_channels1
     FOREIGN KEY (channel_id)
     REFERENCES bkwtrdqkijpbr852tmj3.channels (channel_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT fk_deleted_messages_users1
     FOREIGN KEY (author_id)
     REFERENCES bkwtrdqkijpbr852tmj3.users (author_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS bkwtrdqkijpbr852tmj3.edited_messages (
@@ -107,18 +107,18 @@ CREATE TABLE IF NOT EXISTS bkwtrdqkijpbr852tmj3.edited_messages (
   CONSTRAINT fk_edited_messages_guilds1
     FOREIGN KEY (guild_id)
     REFERENCES bkwtrdqkijpbr852tmj3.guilds (guild_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT fk_edited_messages_channels1
     FOREIGN KEY (channel_id)
     REFERENCES bkwtrdqkijpbr852tmj3.channels (channel_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT fk_edited_messages_users1
     FOREIGN KEY (author_id)
     REFERENCES bkwtrdqkijpbr852tmj3.users (author_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SET SQL_MODE=@OLD_SQL_MODE;
