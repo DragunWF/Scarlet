@@ -7,6 +7,8 @@ import CryptoCommand from "../commands/crypto.js";
 import SnipeCommand from "../commands/snipe.js";
 import ChatCommand from "../commands/chat.js";
 
+const settings = JSON.parse(fs.readFileSync("./config/bot.json"))[0];
+
 const ping = new PingCommand();
 const help = new HelpCommand();
 const info = new InfoCommand();
@@ -28,9 +30,9 @@ const commandExecutions = [
 ];
 
 class CommandProcessor {
-  static onReady(prefix) {
-    ping.prefix = prefix;
-    help.prefix = prefix;
+  static onReady() {
+    ping.prefix = settings.prefix;
+    help.prefix = settings.prefix;
     help.fillCommandList(commands);
     this.mapCommandExecutions();
   }
@@ -46,11 +48,19 @@ class CommandProcessor {
   }
 
   static modifySnipeCommand(isDeletedMessage, message) {
-    if (isDeletedMessage) {
-      snipe.storeDeletedMessage(message);
-    } else {
-      snipe.storeEditedMessage(message.before, message.after);
-    }
+    if (isDeletedMessage) snipe.storeDeletedMessage(message);
+    else snipe.storeEditedMessage(message.before, message.after);
+  }
+
+  static rulerCommandOnly(message) {
+    const responses = [
+      "Only my master can run this command... **nerd**",
+      "Sorry but only my master can run this command...",
+      "Nope, you can't tell me to run this command nerd...",
+      "You can't tell me what to do nerd...",
+      `Hey ${message.author.name}, You can't make me run this command...`,
+    ];
+    message.reply(responses[Math.floor(Math.random() * responses.length)]);
   }
 
   static processCommand(command, client, prefix) {
@@ -62,11 +72,17 @@ class CommandProcessor {
     const parameters = [];
     for (let cmd of commands) {
       if (cmd.alias.includes(commandName.toLowerCase())) {
-        parameters.push(cmd.object);
-        parameters.push(command);
-        if (cmd.hasClientObject) parameters.push(client);
-        if (cmd.hasArgs) parameters.push(args);
-        cmd.execution(...parameters);
+        if (cmd.rulerCommand && command.author.id !== settings.users.master) {
+          this.rulerCommandOnly(command);
+          break;
+        } else {
+          parameters.push(cmd.object);
+          parameters.push(command);
+          if (cmd.hasClientObject) parameters.push(client);
+          if (cmd.hasArgs) parameters.push(args);
+          cmd.execution(...parameters);
+          break;
+        }
       }
     }
   }
