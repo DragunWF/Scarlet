@@ -55,13 +55,35 @@ class DatabaseTool {
         };
         table = "edited_messages";
         break;
+      case "newUser":
+        content = {
+          author_id: message.author.id,
+          author_tag: message.author.tag,
+        };
+        table = "users";
+        break;
+      case "newChannel":
+        content = {
+          guild_id: message.guildId,
+          channel_id: message.channelId,
+          channel_name: message.channel.name,
+        };
+        table = "channels";
+        break;
+      case "newGuild":
+        content = {
+          guild_id: message.guildId,
+          guild_name: message.guild.name,
+        };
+        table = "guilds";
+        break;
     }
     const sqlQuery = `INSERT INTO ${table} SET ?`;
 
     if (type === "messageDelete" || type === "messageUpdate") {
       const id = type === "messageUpdate" ? message.before.id : message.id;
       db.query(`CALL on_message_state_update(${id});`, (err, results) => {
-        if (err) console.error(err);
+        if (err) console.log(err);
       });
     }
 
