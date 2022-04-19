@@ -56,8 +56,8 @@
   {
     "name": "chat",
     "alias": ["chat", "send"],
-    "hasArgs": false,
-    "hasClientObject": true,
+    "hasArgs": true,
+    "hasClientObject": false,
     "rulerCommand": true,
     "execution": null,
     "object": null
@@ -65,7 +65,7 @@
   {
     "name": "channel",
     "alias": ["channel", "set", "setchannel"],
-    "hasArgs": false,
+    "hasArgs": true,
     "hasClientObject": true,
     "rulerCommand": true,
     "execution": null,
