@@ -8,7 +8,7 @@ class MessageLogger {
     if (!(content.length > 1)) return false;
     if (content.length < 10) {
       const uniqueCount = [...new Set(content.split(""))].filter((element) => {
-        if (element === " ") return element;
+        if (element !== " ") return element;
       }).length;
       if (!(uniqueCount > 1)) return false;
     }
