@@ -17,7 +17,7 @@ class DatabaseTool {
     let table = null;
     let content = null;
 
-    this.queryNewInfo();
+    this.queryNewInfo(message);
     switch (type) {
       case "messageCreate":
         content = {
@@ -25,7 +25,7 @@ class DatabaseTool {
           guild_id: message.guildId,
           channel_id: message.channel.id,
           author_id: message.author.id,
-          message_content: message.content,
+          message_content: this.filterUnsupportedCharacters(message.content),
           date_sent: datetime[0],
           time_sent: datetime[1].split(".")[0],
         };
@@ -37,7 +37,7 @@ class DatabaseTool {
           guild_id: message.guildId,
           channel_id: message.channel.id,
           author_id: message.author.id,
-          message_content: message.content,
+          message_content: this.filterUnsupportedCharacters(message.content),
           date_deleted: datetime[0],
           time_deleted: datetime[1].split(".")[0],
         };
@@ -49,8 +49,12 @@ class DatabaseTool {
           guild_id: message.after.guildId,
           channel_id: message.after.channel.id,
           author_id: message.after.author.id,
-          before_edit_content: message.before.content,
-          after_edit_content: message.after.content,
+          before_edit_content: this.filterUnsupportedCharacters(
+            message.before.content
+          ),
+          after_edit_content: this.filterUnsupportedCharacters(
+            message.after.content
+          ),
           date_edited: datetime[0],
           time_edited: datetime[1].split(".")[0],
         };
@@ -68,19 +72,19 @@ class DatabaseTool {
   static queryNewInfo(message) {
     const queries = [
       {
-        select: `SELECT * FROM guilds WHERE guild_id = ${message.guildId}`,
-        table: "guilds",
-        content: {
-          guild_id: message.guildId,
-          guild_name: message.guildName,
-        },
-      },
-      {
         select: `SELECT * FROM users WHERE author_id = ${message.author.id}`,
         table: "users",
         content: {
           author_id: message.author.id,
-          author_tag: message.author.tag,
+          author_tag: this.filterUnsupportedCharacters(message.author.tag),
+        },
+      },
+      {
+        select: `SELECT * FROM guilds WHERE guild_id = ${message.guildId}`,
+        table: "guilds",
+        content: {
+          guild_id: message.guildId,
+          guild_name: message.guild.name,
         },
       },
       {
@@ -89,7 +93,7 @@ class DatabaseTool {
         content: {
           guild_id: message.guildId,
           channel_id: message.channel.id,
-          channel_name: message.channel.name,
+          channel_name: this.filterUnsupportedCharacters(message.channel.name),
         },
       },
     ];
@@ -119,17 +123,22 @@ class DatabaseTool {
           : message.author.id;
       const tag =
         type === messageEvents[2]
-          ? message.before.author.tag
+          ? this.filterUnsupportedCharacters(message.before.author.tag)
           : message.author.tag;
 
       db.query(
         `SELECT * FROM users WHERE author_id = ${id}`,
         (err, results) => {
-          const userTag = results[0].author_tag;
-          if (tag !== userTag) {
-            db.query(`CALL update_user_tag(${id}, ${tag})`, (err, results) => {
-              if (err) console.log(err);
-            });
+          if (results.length) {
+            const userTag = results[0].author_tag;
+            if (tag !== userTag) {
+              db.query(
+                `CALL update_user_tag(${id}, ${tag})`,
+                (err, results) => {
+                  if (err) console.log(err);
+                }
+              );
+            }
           }
         }
       );
@@ -141,6 +150,19 @@ class DatabaseTool {
         if (err) console.log(err);
       });
     }
+  }
+
+  static filterUnsupportedCharacters(string) {
+    const supported =
+      `abcdefghijklmnopqrstuvwxyz0123456789!"#$%&'()*+,-./:;<=>?@[\\]^_\`{|}~. `.split(
+        ""
+      );
+    return string
+      .split("")
+      .filter((chr) => {
+        if (supported.includes(chr.toLowerCase())) return chr;
+      })
+      .join("");
   }
 }
 
