@@ -35,8 +35,8 @@ ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS bkwtrdqkijpbr852tmj3.messages (
   message_id BIGINT NOT NULL,
-  channel_id BIGINT NOT NULL,
   guild_id BIGINT NOT NULL,
+  channel_id BIGINT NOT NULL,
   author_id BIGINT NOT NULL,
   message_content VARCHAR(2000) NOT NULL,
   date_sent DATE NOT NULL,
@@ -45,17 +45,17 @@ CREATE TABLE IF NOT EXISTS bkwtrdqkijpbr852tmj3.messages (
   INDEX fk_messages_channels1_idx (channel_id ASC) VISIBLE,
   INDEX fk_messages_guilds1_idx (guild_id ASC) VISIBLE,
   INDEX fk_messages_users1_idx (author_id ASC) VISIBLE,
-  CONSTRAINT fk_messages_channels1
+  CONSTRAINT fk_messages_channels
     FOREIGN KEY (channel_id)
     REFERENCES bkwtrdqkijpbr852tmj3.channels (channel_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT fk_messages_guilds1
+  CONSTRAINT fk_messages_guilds
     FOREIGN KEY (guild_id)
     REFERENCES bkwtrdqkijpbr852tmj3.guilds (guild_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT fk_messages_users1
+  CONSTRAINT fk_messages_users
     FOREIGN KEY (author_id)
     REFERENCES bkwtrdqkijpbr852tmj3.users (author_id)
     ON DELETE CASCADE
@@ -74,17 +74,17 @@ CREATE TABLE IF NOT EXISTS bkwtrdqkijpbr852tmj3.deleted_messages (
   INDEX fk_deleted_messages_guilds1_idx (guild_id ASC) VISIBLE,
   INDEX fk_deleted_messages_channels1_idx (channel_id ASC) VISIBLE,
   INDEX fk_deleted_messages_users1_idx (author_id ASC) VISIBLE,
-  CONSTRAINT fk_deleted_messages_guilds1
+  CONSTRAINT fk_deleted_messages_guilds
     FOREIGN KEY (guild_id)
     REFERENCES bkwtrdqkijpbr852tmj3.guilds (guild_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT fk_deleted_messages_channels1
+  CONSTRAINT fk_deleted_messages_channels
     FOREIGN KEY (channel_id)
     REFERENCES bkwtrdqkijpbr852tmj3.channels (channel_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT fk_deleted_messages_users1
+  CONSTRAINT fk_deleted_messages_users
     FOREIGN KEY (author_id)
     REFERENCES bkwtrdqkijpbr852tmj3.users (author_id)
     ON DELETE CASCADE
@@ -104,17 +104,17 @@ CREATE TABLE IF NOT EXISTS bkwtrdqkijpbr852tmj3.edited_messages (
   INDEX fk_edited_messages_guilds1_idx (guild_id ASC) VISIBLE,
   INDEX fk_edited_messages_channels1_idx (channel_id ASC) VISIBLE,
   INDEX fk_edited_messages_users1_idx (author_id ASC) VISIBLE,
-  CONSTRAINT fk_edited_messages_guilds1
+  CONSTRAINT fk_edited_messages_guilds
     FOREIGN KEY (guild_id)
     REFERENCES bkwtrdqkijpbr852tmj3.guilds (guild_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT fk_edited_messages_channels1
+  CONSTRAINT fk_edited_messages_channels
     FOREIGN KEY (channel_id)
     REFERENCES bkwtrdqkijpbr852tmj3.channels (channel_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT fk_edited_messages_users1
+  CONSTRAINT fk_edited_messages_users
     FOREIGN KEY (author_id)
     REFERENCES bkwtrdqkijpbr852tmj3.users (author_id)
     ON DELETE CASCADE
@@ -176,7 +176,6 @@ ORDER BY time_edited, date_edited DESC;
 ----------------------------------------------------
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS on_message_state_update
 CREATE PROCEDURE on_message_state_update
 (
 	message_id BIGINT
@@ -186,7 +185,6 @@ BEGIN
   WHERE m.message_id = message_id;
 END $$
 
-DROP PROCEDURE IF EXISTS update_channel_name
 CREATE PROCEDURE update_channel_name
 (
 	channel_id BIGINT,
@@ -198,7 +196,6 @@ BEGIN
   WHERE c.channel_id = channel_id;
 END $$
 
-DROP PROCEDURE IF EXISTS update_guild_name
 CREATE PROCEDURE update_guild_name
 (
 	guild_id BIGINT,
@@ -210,7 +207,6 @@ BEGIN
   WHERE g.guild_id = guild_id;
 END $$
 
-DROP PROCEDURE IF EXISTS update_guild_status
 CREATE PROCEDURE update_guild_status
 (
 	guild_id BIGINT
@@ -224,7 +220,6 @@ BEGIN
   WHERE g.guild_id = guild_id;
 END $$
 
-DROP PROCEDURE IF EXISTS update_user_tag
 CREATE PROCEDURE update_user_tag
 (
 	  author_id BIGINT,
@@ -239,7 +234,6 @@ END $$
 ----------------------------------------------------
 -- Create all events
 ----------------------------------------------------
-DROP EVENT IF EXISTS monthly_clear_logs
 CREATE EVENT monthly_clear_logs
 ON SCHEDULE
 	EVERY 1 MONTH STARTS "2022-01-01"
