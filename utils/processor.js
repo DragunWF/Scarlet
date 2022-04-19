@@ -5,12 +5,14 @@ import HelpCommand from "../commands/help.js";
 import InfoCommand from "../commands/info.js";
 import CryptoCommand from "../commands/crypto.js";
 import SnipeCommand from "../commands/snipe.js";
+import ChatCommand from "../commands/chat.js";
 
 const ping = new PingCommand();
 const help = new HelpCommand();
 const info = new InfoCommand();
 const crypto = new CryptoCommand();
 const snipe = new SnipeCommand();
+const chat = new ChatCommand();
 
 // The purpose of command executions is to map command objects with a function to call
 const commands = JSON.parse(fs.readFileSync("./config/commands.json"));
@@ -21,6 +23,8 @@ const commandExecutions = [
   { name: "crypto", call: crypto.sendCryptoData, object: crypto },
   { name: "snipe", call: snipe.snipeDeletedMessage, object: snipe },
   { name: "esnipe", call: snipe.snipeEditedMessage, object: snipe },
+  { name: "chat", call: chat.sendMessage, object: chat },
+  { name: "channel", call: chat.setChannel, object: chat },
 ];
 
 class CommandProcessor {
@@ -49,7 +53,7 @@ class CommandProcessor {
     }
   }
 
-  static processCommand(command, prefix) {
+  static processCommand(command, client, prefix) {
     const [commandName, ...args] = command.content
       .trim()
       .substring(prefix.length)
@@ -60,6 +64,7 @@ class CommandProcessor {
       if (cmd.alias.includes(commandName.toLowerCase())) {
         parameters.push(cmd.object);
         parameters.push(command);
+        if (cmd.hasClientObject) parameters.push(client);
         if (cmd.hasArgs) parameters.push(args);
         cmd.execution(...parameters);
       }
