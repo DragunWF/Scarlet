@@ -1,5 +1,3 @@
-USE scarlet_db;
-
 CREATE OR REPLACE VIEW simple_messages AS
 SELECT
 	author_tag AS name,

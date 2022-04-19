@@ -1,5 +1,3 @@
-USE scarlet_db;
-
 DROP PROCEDURE IF EXISTS on_message_state_update;
 
 DELIMITER $$

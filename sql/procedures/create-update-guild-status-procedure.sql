@@ -1,5 +1,3 @@
-USE scarlet_db;
-
 DROP PROCEDURE IF EXISTS update_guild_status;
 
 DELIMITER $$
