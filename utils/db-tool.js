@@ -2,7 +2,7 @@ import "dotenv/config";
 import mysql from "mysql";
 
 const db = mysql.createPool({
-  connectionLimit: 5,
+  connectionLimit: 4,
   aquireTimeout: 10000,
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -68,7 +68,7 @@ class DatabaseTool {
       db.query(sqlQuery, content, (err, results) => {
         if (err) console.log(err);
       });
-    }, 50);
+    }, 100);
   }
 
   static queryNewInfo(message) {
@@ -123,10 +123,11 @@ class DatabaseTool {
         type === messageEvents[2]
           ? message.before.author.id
           : message.author.id;
-      const tag =
+      const tag = this.filterUnsupportedCharacters(
         type === messageEvents[2]
-          ? this.filterUnsupportedCharacters(message.before.author.tag)
-          : message.author.tag;
+          ? message.before.author.tag
+          : message.author.tag
+      );
 
       db.query(
         `SELECT * FROM users WHERE author_id = ${id}`,
