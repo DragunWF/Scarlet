@@ -41,27 +41,35 @@ class MessageLogger {
 
   static logEditedMessage(before, after, client) {
     if (this.validateMessageContent(after.content)) {
-      this.logToChannel(before, settings.logChannels.edited, client);
-      DatabaseTool.insertMessageContent(
-        { before: before, after: after },
-        "messageUpdate"
-      );
+      const changes = { before: before, after: after };
+      this.logToChannel(changes, settings.logChannels.edited, client);
+      DatabaseTool.insertMessageContent(changes, "messageUpdate");
     }
   }
 
   static logToChannel(message, channel, client) {
     const logChannel = client.channels.cache.get(channel);
-    const footerText =
-      channel == settings.logChannels.deleted
-        ? "Deleted Message"
-        : "Edited Message";
+    let footerText = null;
+    let description = null;
+    let author = null;
+
+    if (channel === settings.logChannels.deleted) {
+      author = message.author;
+      description = message.content;
+      footerText = "Deleted Message";
+    } else {
+      author = message.before.author;
+      description = `**Before Edit:**\n${message.before.content}\n\n**After Edit:**\n${message.after.content}`;
+      footerText = "Edited Message";
+    }
+
     const embed = new MessageEmbed()
       .setColor(utils.getRandomEmbedColor())
       .setAuthor({
-        name: message.author.tag,
-        iconURL: message.author.displayAvatarURL(),
+        name: author.tag,
+        iconURL: author.displayAvatarURL(),
       })
-      .setDescription(message.content)
+      .setDescription(description)
       .setFooter({ text: footerText })
       .setTimestamp();
     logChannel.send({ embeds: [embed] });
