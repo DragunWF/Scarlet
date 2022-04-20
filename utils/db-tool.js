@@ -17,6 +17,9 @@ class DatabaseTool {
     let table = null;
     let content = null;
 
+    this.queryNewInfo(message, type);
+    this.queryNewUpdates(message, type);
+
     switch (type) {
       case "messageCreate":
         content = {
@@ -29,7 +32,6 @@ class DatabaseTool {
           time_sent: datetime[1].split(".")[0],
         };
         table = "messages";
-        this.queryNewInfo(message);
         break;
       case "messageDelete":
         content = {
@@ -64,61 +66,25 @@ class DatabaseTool {
     const sqlQuery = `INSERT INTO ${table} SET ?`;
 
     setTimeout(() => {
-      this.queryNewUpdates(message, type);
-    }, 50);
-
-    setTimeout(() => {
       db.query(sqlQuery, content, (err, results) => {
         if (err) console.log(err);
       });
-    }, 100);
+    }, 25);
   }
 
-  static queryNewInfo(message) {
-    const queries = [
-      {
-        select: `SELECT * FROM users WHERE author_id = ${message.author.id}`,
-        table: "users",
-        content: {
-          author_id: message.author.id,
-          author_tag: this.filterUnsupportedCharacters(message.author.tag),
-        },
-      },
-      {
-        select: `SELECT * FROM guilds WHERE guild_id = ${message.guild.id}`,
-        table: "guilds",
-        content: {
-          guild_id: message.guild.id,
-          guild_name: message.guild.name,
-        },
-      },
-      {
-        select: `SELECT * FROM channels WHERE channel_id = ${message.channel.id}`,
-        table: "channels",
-        content: {
-          guild_id: message.guild.id,
-          channel_id: message.channel.id,
-          channel_name: this.filterUnsupportedCharacters(message.channel.name),
-        },
-      },
+  static queryNewInfo(message, type) {
+    if (type === "messageUpdate") message = message.before;
+    const parameters = [
+      message.guild.id,
+      message.guild.name,
+      message.channel.id,
+      message.channel.name,
+      message.author.id,
+      message.author_tag,
     ];
-
-    for (let query of queries) {
-      db.query(query.select, (err, results) => {
-        console.log(results);
-        if (err) console.log(err);
-
-        if (!results.length) {
-          db.query(
-            `INSERT INTO ${query.table} SET ?`,
-            query.content,
-            (err, results) => {
-              if (err) console.log(err);
-            }
-          );
-        }
-      });
-    }
+    db.query("CALL insert_new_info(?,?,?,?,?,?)", parameters, (err, result) => {
+      if (err) console.log(err);
+    });
   }
 
   static queryNewUpdates(message, type) {
@@ -134,21 +100,12 @@ class DatabaseTool {
           : message.author.tag
       );
 
+      const parameters = [id, tag];
       db.query(
-        `SELECT * FROM users WHERE author_id = ${id}`,
+        "CALL check_user_tag_updates(?,?)",
+        parameters,
         (err, results) => {
           if (err) console.log(err);
-          if (results.length) {
-            const userTag = results[0].author_tag;
-            if (tag !== userTag) {
-              db.query(
-                `CALL update_user_tag(${id}, ${tag})`,
-                (err, results) => {
-                  if (err) console.log(err);
-                }
-              );
-            }
-          }
         }
       );
     }
