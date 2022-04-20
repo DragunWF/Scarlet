@@ -15,7 +15,8 @@ DROP VIEW IF EXISTS simple_edited_messages;
 DROP PROCEDURE IF EXISTS on_message_state_update;
 DROP PROCEDURE IF EXISTS update_guild_status;
 DROP PROCEDURE IF EXISTS update_guild_name;
-DROP PROCEDURE IF EXISTS update_user_tag;
+DROP PROCEDURE IF EXISTS check_user_tag_updates;
+DROP PROCEDURE IF EXISTS insert_new_info;
 DROP PROCEDURE IF EXISTS update_channel_name;
 
 -- Drop all events
