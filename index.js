@@ -35,7 +35,7 @@ client.on("messageDelete", (message) => {
   try {
     if (message.author.bot) return;
     CommandProcessor.modifySnipeCommand(true, message);
-    MessageLogger.logDeletedMessage(message);
+    MessageLogger.logDeletedMessage(message, client);
   } catch (error) {
     console.log(error);
   }
@@ -48,7 +48,7 @@ client.on("messageUpdate", (oldMessage, newMessage) => {
       before: oldMessage,
       after: newMessage,
     });
-    MessageLogger.logEditedMessage(oldMessage, newMessage);
+    MessageLogger.logEditedMessage(oldMessage, newMessage, client);
   } catch (error) {
     console.log(error);
   }
