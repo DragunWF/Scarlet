@@ -33,7 +33,7 @@ class ChatCommand extends Command {
   }
 
   setChannel(object, message, client, channelId) {
-    if (object.channel && object.channel.id === channelId)
+    if (object.channel && object.channel.id === channelId[0])
       message.channel.send("I've already been set up there master");
     else {
       const responses = object.channel
