@@ -22,7 +22,7 @@ class DatabaseTool {
       case "messageCreate":
         content = {
           message_id: message.id,
-          guild_id: message.guildId,
+          guild_id: message.guild.id,
           channel_id: message.channel.id,
           author_id: message.author.id,
           message_content: this.filterUnsupportedCharacters(message.content),
@@ -34,7 +34,7 @@ class DatabaseTool {
       case "messageDelete":
         content = {
           message_id: message.id,
-          guild_id: message.guildId,
+          guild_id: message.guild.id,
           channel_id: message.channel.id,
           author_id: message.author.id,
           message_content: this.filterUnsupportedCharacters(message.content),
@@ -46,7 +46,7 @@ class DatabaseTool {
       case "messageUpdate":
         content = {
           message_id: message.after.id,
-          guild_id: message.after.guildId,
+          guild_id: message.after.guild.id,
           channel_id: message.after.channel.id,
           author_id: message.after.author.id,
           before_edit_content: this.filterUnsupportedCharacters(
@@ -64,9 +64,11 @@ class DatabaseTool {
     const sqlQuery = `INSERT INTO ${table} SET ?`;
 
     this.queryNewUpdates(message, type);
-    db.query(sqlQuery, content, (err, results) => {
-      if (err) console.log(err);
-    });
+    setTimeout(() => {
+      db.query(sqlQuery, content, (err, results) => {
+        if (err) console.log(err);
+      });
+    }, 50);
   }
 
   static queryNewInfo(message) {
@@ -80,10 +82,10 @@ class DatabaseTool {
         },
       },
       {
-        select: `SELECT * FROM guilds WHERE guild_id = ${message.guildId}`,
+        select: `SELECT * FROM guilds WHERE guild_id = ${message.guild.id}`,
         table: "guilds",
         content: {
-          guild_id: message.guildId,
+          guild_id: message.guild.id,
           guild_name: message.guild.name,
         },
       },
@@ -91,7 +93,7 @@ class DatabaseTool {
         select: `SELECT * FROM channels WHERE channel_id = ${message.channel.id}`,
         table: "channels",
         content: {
-          guild_id: message.guildId,
+          guild_id: message.guild.id,
           channel_id: message.channel.id,
           channel_name: this.filterUnsupportedCharacters(message.channel.name),
         },
@@ -129,6 +131,7 @@ class DatabaseTool {
       db.query(
         `SELECT * FROM users WHERE author_id = ${id}`,
         (err, results) => {
+          if (err) console.log(err);
           if (results.length) {
             const userTag = results[0].author_tag;
             if (tag !== userTag) {
