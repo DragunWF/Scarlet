@@ -13,7 +13,7 @@ CREATE PROCEDURE insert_new_info
 BEGIN
 	INSERT IGNORE INTO guilds
     SET guild_id = new_guild_id,
-		new_guild_name = new_guild_name;
+		guild_name = new_guild_name;
 	
     INSERT IGNORE INTO channels
     SET guild_id = new_guild_id,
