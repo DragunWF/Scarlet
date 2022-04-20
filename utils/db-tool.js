@@ -156,10 +156,11 @@ class DatabaseTool {
   }
 
   static filterUnsupportedCharacters(string) {
-    const supported =
-      `abcdefghijklmnopqrstuvwxyz0123456789!"#$%&'()*+,-./:;<=>?@[\\]^_\`{|}~. `.split(
-        ""
-      );
+    const letters = "abcdefghijklmnopqrstuvwxyz";
+    const digits = "0123456789";
+    const punctuations = `!"#$%&'()*+,-./:;<=>?@[\\]^_\`{|}~. `;
+
+    const supported = `${letters}${digits}${punctuations}`.split("");
     return string
       .split("")
       .filter((chr) => {
