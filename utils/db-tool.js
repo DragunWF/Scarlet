@@ -2,7 +2,7 @@ import "dotenv/config";
 import mysql from "mysql";
 
 const db = mysql.createPool({
-  connectionLimit: 4,
+  connectionLimit: 5,
   aquireTimeout: 10000,
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -17,7 +17,6 @@ class DatabaseTool {
     let table = null;
     let content = null;
 
-    this.queryNewInfo(message);
     switch (type) {
       case "messageCreate":
         content = {
@@ -30,6 +29,7 @@ class DatabaseTool {
           time_sent: datetime[1].split(".")[0],
         };
         table = "messages";
+        this.queryNewInfo(message);
         break;
       case "messageDelete":
         content = {
@@ -63,7 +63,10 @@ class DatabaseTool {
     }
     const sqlQuery = `INSERT INTO ${table} SET ?`;
 
-    this.queryNewUpdates(message, type);
+    setTimeout(() => {
+      this.queryNewUpdates(message, type);
+    }, 50);
+
     setTimeout(() => {
       db.query(sqlQuery, content, (err, results) => {
         if (err) console.log(err);
@@ -102,7 +105,9 @@ class DatabaseTool {
 
     for (let query of queries) {
       db.query(query.select, (err, results) => {
+        console.log(results);
         if (err) console.log(err);
+
         if (!results.length) {
           db.query(
             `INSERT INTO ${query.table} SET ?`,
@@ -120,11 +125,11 @@ class DatabaseTool {
     const messageEvents = ["messageCreate", "messageUpdate", "messageDelete"];
     if (messageEvents.includes(type)) {
       const id =
-        type === messageEvents[2]
+        type === messageEvents[1]
           ? message.before.author.id
           : message.author.id;
       const tag = this.filterUnsupportedCharacters(
-        type === messageEvents[2]
+        type === messageEvents[1]
           ? message.before.author.tag
           : message.author.tag
       );
