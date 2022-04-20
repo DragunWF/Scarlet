@@ -220,15 +220,43 @@ BEGIN
   WHERE g.guild_id = guild_id;
 END $$
 
-CREATE PROCEDURE update_user_tag
+CREATE PROCEDURE check_user_tag_updates
 (
-	  author_id BIGINT,
+	author_id BIGINT,
     new_tag VARCHAR(37)
 )
 BEGIN
 	UPDATE users u
-  SET u.author_tag = new_tag
-  WHERE u.author_id = author_id;
+    SET u.author_tag =
+		CASE
+			WHEN u.author_tag != new_tag THEN new_tag
+            ELSE u.author_tag
+		END
+    WHERE u.author_id = author_id;
+END $$
+
+CREATE PROCEDURE insert_new_info
+(
+	new_guild_id BIGINT,
+	new_guild_name VARCHAR(100),
+	new_channel_id BIGINT,
+	new_channel_name VARCHAR(100),
+	new_author_id BIGINT,
+	new_author_tag VARCHAR(37)
+)
+BEGIN
+	INSERT IGNORE INTO guilds
+    SET guild_id = new_guild_id,
+		guild_name = new_guild_name;
+	
+    INSERT IGNORE INTO channels
+    SET guild_id = new_guild_id,
+		channel_id = new_channel_id,
+		channel_name = new_channel_name;
+	
+    INSERT IGNORE INTO users
+    SET author_id = new_author_id,
+		author_tag = new_author_tag;
 END $$
 
 ----------------------------------------------------
