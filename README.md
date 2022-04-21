@@ -1,10 +1,10 @@
-# Scarlet Bot
+# Scarlet-Bot
 
 ## Table-of-Contents
 
 - [Description](#description)
 - [Links](#links)
-- [MySQL Database Model](#MySQL-Database-Model)
+- [MySQL Database Model](#MySQL_Database_Model)
 - [Commands](#commands)
 - [Contact](#contact)
 
@@ -19,13 +19,13 @@ a MySQL database for monitoring things.
 - [My Website](https://dragunwf.herokuapp.com/)
 - [Bot Page](#) `Nothing yet`
 
-## MySQL-Database-Model
+## MySQL_Database_Model
 
 ![Picture of Physical Model](sql/schema/scarlet_db_model.PNG)
 
 ## Commands
 
-### Available Commands
+### Available_Commands
 
 - `s!help`
 - `s!info`
@@ -34,7 +34,7 @@ a MySQL database for monitoring things.
 - `s!esnipe`
 - `s!crypto <currency>`
 
-### Ruler Only Commands
+### Ruler_Only_Commands
 
 - `s!set <channel>`
 - `s!send <message>`
