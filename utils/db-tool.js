@@ -76,11 +76,11 @@ class DatabaseTool {
     if (type === "messageUpdate") message = message.before;
     const parameters = [
       message.guild.id,
-      message.guild.name,
+      this.filterUnsupportedCharacters(message.guild.name),
       message.channel.id,
-      message.channel.name,
+      this.filterUnsupportedCharacters(message.channel.name),
       message.author.id,
-      message.author_tag,
+      this.filterUnsupportedCharacters(message.author_tag),
     ];
     db.query("CALL insert_new_info(?,?,?,?,?,?)", parameters, (err, result) => {
       if (err) console.log(err);
