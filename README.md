@@ -10,8 +10,10 @@
 
 ## Description:
 
-Hello! This is just a private discord bot made for my own personal use. This bot also has
-a MySQL database for monitoring things.
+Hello! This is just a private discord bot made for my own personal use.
+
+This bot also has a MySQL database for monitoring things. Furthermore, my bot's database
+is also complete with stored procedures, views, and events for automated maintenance.
 
 ## Links:
 
