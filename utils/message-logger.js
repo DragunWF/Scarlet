@@ -40,7 +40,13 @@ class MessageLogger {
   }
 
   static logEditedMessage(before, after, client) {
-    if (this.validateMessageContent(after.content)) {
+    // Discord auto edits links for some reason so I just exclude links from getting logged
+    // Mainly to avoid my logs from getting clogged up with useless information
+    if (
+      this.validateMessageContent(after.content) &&
+      !before.content.startsWith("https://") &&
+      !before.content.startsWith("http://")
+    ) {
       const changes = { before: before, after: after };
       this.logToChannel(changes, settings.logChannels.edited, client);
       DatabaseTool.insertMessageContent(changes, "messageUpdate");
