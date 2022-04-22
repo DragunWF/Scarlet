@@ -80,7 +80,7 @@ class DatabaseTool {
       message.channel.id,
       this.filterUnsupportedCharacters(message.channel.name),
       message.author.id,
-      this.filterUnsupportedCharacters(message.author_tag),
+      this.filterUnsupportedCharacters(message.author.tag),
     ];
     db.query("CALL insert_new_info(?,?,?,?,?,?)", parameters, (err, result) => {
       if (err) console.log(err);
