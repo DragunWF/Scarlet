@@ -63,10 +63,10 @@ class CommandProcessor {
     message.reply(responses[Math.floor(Math.random() * responses.length)]);
   }
 
-  static processCommand(command, client, prefix) {
+  static processCommand(command, client) {
     const [commandName, ...args] = command.content
       .trim()
-      .substring(prefix.length)
+      .substring(settings.prefix.length)
       .split(/\s+/);
 
     const parameters = [];
