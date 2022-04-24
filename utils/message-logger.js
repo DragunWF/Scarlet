@@ -34,7 +34,7 @@ class MessageLogger {
 
   static logDeletedMessage(message, client) {
     if (this.validateMessageContent(message.content)) {
-      this.logToChannel(message, settings.logChannels.deleted, client);
+      this.#logToChannel(message, settings.logChannels.deleted, client);
       DatabaseTool.insertMessageContent(message, "messageDelete");
     }
   }
@@ -48,12 +48,12 @@ class MessageLogger {
       !before.content.startsWith("http://")
     ) {
       const changes = { before: before, after: after };
-      this.logToChannel(changes, settings.logChannels.edited, client);
+      this.#logToChannel(changes, settings.logChannels.edited, client);
       DatabaseTool.insertMessageContent(changes, "messageUpdate");
     }
   }
 
-  static logToChannel(message, channel, client) {
+  static #logToChannel(message, channel, client) {
     const logChannel = client.channels.cache.get(channel);
     let footerText = null;
     let description = null;

@@ -33,7 +33,7 @@ class CommandProcessor {
   static onReady() {
     ping.prefix = settings.prefix;
     help.prefix = settings.prefix;
-    help.fillCommandList(commands);
+    help.#fillCommandList(commands);
     this.mapCommandExecutions();
   }
 
@@ -52,7 +52,7 @@ class CommandProcessor {
     else snipe.storeEditedMessage(message.before, message.after);
   }
 
-  static rulerCommandOnly(message) {
+  static #rulerCommandOnly(message) {
     const responses = [
       "Only my master can run this command... **nerd**",
       "Sorry but only my master can run this command...",
@@ -73,7 +73,7 @@ class CommandProcessor {
     for (let cmd of commands) {
       if (cmd.alias.includes(commandName.toLowerCase())) {
         if (cmd.rulerCommand && command.author.id !== settings.users.master) {
-          this.rulerCommandOnly(command);
+          this.#rulerCommandOnly(command);
           break;
         } else {
           parameters.push(cmd.object);

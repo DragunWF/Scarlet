@@ -27,7 +27,7 @@ class DatabaseTool {
           guild_id: message.guild.id,
           channel_id: message.channel.id,
           author_id: message.author.id,
-          message_content: this.filterUnsupportedCharacters(message.content),
+          message_content: this.#filterUnsupportedCharacters(message.content),
           date_sent: datetime[0],
           time_sent: datetime[1].split(".")[0],
         };
@@ -39,7 +39,7 @@ class DatabaseTool {
           guild_id: message.guild.id,
           channel_id: message.channel.id,
           author_id: message.author.id,
-          message_content: this.filterUnsupportedCharacters(message.content),
+          message_content: this.#filterUnsupportedCharacters(message.content),
           date_deleted: datetime[0],
           time_deleted: datetime[1].split(".")[0],
         };
@@ -51,10 +51,10 @@ class DatabaseTool {
           guild_id: message.after.guild.id,
           channel_id: message.after.channel.id,
           author_id: message.after.author.id,
-          before_edit_content: this.filterUnsupportedCharacters(
+          before_edit_content: this.#filterUnsupportedCharacters(
             message.before.content
           ),
-          after_edit_content: this.filterUnsupportedCharacters(
+          after_edit_content: this.#filterUnsupportedCharacters(
             message.after.content
           ),
           date_edited: datetime[0],
@@ -76,11 +76,11 @@ class DatabaseTool {
     if (type === "messageUpdate") message = message.before;
     const parameters = [
       message.guild.id,
-      this.filterUnsupportedCharacters(message.guild.name),
+      this.#filterUnsupportedCharacters(message.guild.name),
       message.channel.id,
-      this.filterUnsupportedCharacters(message.channel.name),
+      this.#filterUnsupportedCharacters(message.channel.name),
       message.author.id,
-      this.filterUnsupportedCharacters(message.author.tag),
+      this.#filterUnsupportedCharacters(message.author.tag),
     ];
     db.query("CALL insert_new_info(?,?,?,?,?,?)", parameters, (err, result) => {
       if (err) console.log(err);
@@ -94,7 +94,7 @@ class DatabaseTool {
         type === messageEvents[1]
           ? message.before.author.id
           : message.author.id;
-      const tag = this.filterUnsupportedCharacters(
+      const tag = this.#filterUnsupportedCharacters(
         type === messageEvents[1]
           ? message.before.author.tag
           : message.author.tag
@@ -118,7 +118,7 @@ class DatabaseTool {
     }
   }
 
-  static filterUnsupportedCharacters(string) {
+  static #filterUnsupportedCharacters(string) {
     const letters = "abcdefghijklmnopqrstuvwxyz";
     const digits = "0123456789";
     const punctuations = `!"#$%&'()*+,-./:;<=>?@[\\]^_\`{|}~. `;
