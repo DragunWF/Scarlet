@@ -3,17 +3,16 @@ import DatabaseTool from "./db-tool.js";
 import Command from "./command.js";
 import { MessageEmbed } from "discord.js";
 
-const settings = JSON.parse(fs.readFileSync("./config/bot.json"))[0];
-const utils = new Command();
-
-let lastMessageContent = null;
-
 class MessageLogger {
+  static #settings = JSON.parse(fs.readFileSync("./config/bot.json"))[0];
+  static #utils = new Command();
+  static #lastMessageContent = null;
+
   static validateMessageContent(content, isMessageCreate = false) {
     if (
       !(content.length > 1) ||
-      (isMessageCreate && content.startsWith(settings.prefix)) ||
-      (isMessageCreate && content === lastMessageContent)
+      (isMessageCreate && content.startsWith(this.#settings.prefix)) ||
+      (isMessageCreate && content === this.#lastMessageContent)
     )
       return false;
     if (content.length < 10) {
@@ -27,14 +26,14 @@ class MessageLogger {
 
   static logCreatedMessage(message) {
     if (this.validateMessageContent(message.content, true)) {
-      lastMessageContent = message.content;
+      this.#lastMessageContent = message.content;
       DatabaseTool.insertMessageContent(message, "messageCreate");
     }
   }
 
   static logDeletedMessage(message, client) {
     if (this.validateMessageContent(message.content)) {
-      this.#logToChannel(message, settings.logChannels.deleted, client);
+      this.#logToChannel(message, this.#settings.logChannels.deleted, client);
       DatabaseTool.insertMessageContent(message, "messageDelete");
     }
   }
@@ -48,7 +47,7 @@ class MessageLogger {
       !before.content.startsWith("http://")
     ) {
       const changes = { before: before, after: after };
-      this.#logToChannel(changes, settings.logChannels.edited, client);
+      this.#logToChannel(changes, this.#settings.logChannels.edited, client);
       DatabaseTool.insertMessageContent(changes, "messageUpdate");
     }
   }
@@ -59,7 +58,7 @@ class MessageLogger {
     let description = null;
     let author = null;
 
-    if (channel === settings.logChannels.deleted) {
+    if (channel === this.#settings.logChannels.deleted) {
       author = message.author;
       description = message.content;
       footerText = "Deleted Message";
@@ -70,7 +69,7 @@ class MessageLogger {
     }
 
     const embed = new MessageEmbed()
-      .setColor(utils.getRandomEmbedColor())
+      .setColor(this.#utils.getRandomEmbedColor())
       .setAuthor({
         name: author.tag,
         iconURL: author.displayAvatarURL(),

@@ -1,11 +1,11 @@
 import fs from "fs";
 
-const data = JSON.parse(fs.readFileSync("./config/keywords.json"));
-
 class KeywordResponder {
+  static #data = JSON.parse(fs.readFileSync("./config/keywords.json"));
+
   static checkForKeyword(message) {
     for (let word of message.content.split(" ")) {
-      for (let object of data) {
+      for (let object of this.#data) {
         if (object.keywords.includes(word)) {
           if (this.#checkIfCanExecute(object))
             this.#respondToMessage(message, object);
@@ -17,7 +17,7 @@ class KeywordResponder {
 
   static #checkIfCanExecute(keywordObject) {
     let canExecute = false;
-    data[data.indexOf(keywordObject)].timesMentioned++;
+    this.#data[this.#data.indexOf(keywordObject)].timesMentioned++;
     if (keywordObject.timesMentioned % keywordObject.timesToExecute == 0)
       canExecute = true;
     return canExecute;
