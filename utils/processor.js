@@ -33,7 +33,7 @@ class CommandProcessor {
   static onReady() {
     ping.prefix = settings.prefix;
     help.prefix = settings.prefix;
-    help.#fillCommandList(commands);
+    help.fillCommandList(commands);
     this.mapCommandExecutions();
   }
 
