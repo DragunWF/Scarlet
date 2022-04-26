@@ -48,7 +48,7 @@
     "object": null
   },
   {
-    "name": "chat",
+    "name": "send",
     "alias": ["chat", "send"],
     "hasArgs": true,
     "hasClientObject": false,
@@ -56,7 +56,7 @@
     "object": null
   },
   {
-    "name": "channel",
+    "name": "set",
     "alias": ["channel", "set", "setchannel"],
     "hasArgs": true,
     "hasClientObject": true,
