@@ -1,16 +1,15 @@
 import Command from "../utils/command.js";
 
-export class SendMessageCommand extends Command {
-  #channel;
+let channel;
 
+export class SendMessageCommand extends Command {
   constructor() {
     super();
-    this.#channel = null;
   }
 
   executeCommand(message, content) {
     try {
-      if (this.#channel) this.#channel.send(content.join(" "));
+      if (channel) channel.send(content.join(" "));
       else {
         const responses = [
           "A channel has not been set up yet master...",
@@ -41,10 +40,10 @@ export class SetChannelCommand extends Command {
   }
 
   executeCommand(message, client, channelId) {
-    if (this.channel && this.channel.id === channelId[0])
+    if (channel && channel.id === channelId[0])
       message.channel.send("I've already been set up there master");
     else {
-      const responses = this.channel
+      const responses = channel
         ? [
             "Time for me to move to a different area",
             "Well, time to travel again I guess",
@@ -58,9 +57,8 @@ export class SetChannelCommand extends Command {
             "Time for another session hehe...",
           ];
 
-      this.channel = client.channels.cache.get(channelId[0]);
-      if (!this.channel)
-        message.channel.send("That's an invalid input master!");
+      channel = client.channels.cache.get(channelId[0]);
+      if (!channel) message.channel.send("That's an invalid input master!");
       else
         message.reply(responses[Math.floor(Math.random() * responses.length)]);
     }

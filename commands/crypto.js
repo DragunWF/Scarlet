@@ -22,12 +22,12 @@ class CryptoCommand extends Command {
         cryptoData.push(await this.#fetchCryptoData(coin.id, currency));
 
       const description = await this.#concatenateData(cryptoData, currency);
-      const embedOutput = new this.MessageEmbed()
+      const embed = new this.MessageEmbed()
         .setColor(this.mainColor)
         .setTitle("Cryptocurrency Values")
         .setDescription(description)
         .setFooter({ text: "Data fetched from CoinGecko" });
-      message.channel.send({ embeds: [embedOutput] });
+      message.channel.send({ embeds: [embed] });
     } catch (error) {
       message.channel.send("Unsupported Command Arguments");
     }
@@ -47,12 +47,12 @@ class CryptoCommand extends Command {
   async #concatenateData(array, currency) {
     let output = "";
     for (let i = 0; i < array.length; i++) {
-      const value = array[i][this.coins[i]["id"]][currency]
+      const value = array[i][this.#coins[i]["id"]][currency]
         .toFixed(2)
         .toString()
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       output += `**${
-        this.coins[i].name
+        this.#coins[i].name
       }:** \`${value} ${currency.toUpperCase()}\`\n`;
     }
     return output;

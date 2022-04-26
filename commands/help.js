@@ -1,3 +1,4 @@
+import fs from "fs";
 import Command from "../utils/command.js";
 
 class HelpCommand extends Command {
