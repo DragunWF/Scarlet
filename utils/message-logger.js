@@ -5,7 +5,7 @@ import { MessageEmbed } from "discord.js";
 
 class MessageLogger {
   static #settings = JSON.parse(fs.readFileSync("./config/bot.json"))[0];
-  static #utils = new Command();
+  static #utils = new Command(); // Just for the random embed function
   static #lastMessageContent = null;
 
   static validateMessageContent(content, isMessageCreate = false) {
