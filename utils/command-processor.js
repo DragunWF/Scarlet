@@ -5,9 +5,7 @@ import HelpCommand from "../commands/help.js";
 import InfoCommand from "../commands/info.js";
 import CryptoCommand from "../commands/crypto.js";
 import { SnipeCommand, EditSnipeCommand } from "../commands/snipes.js";
-import ChatCommand from "../commands/chat.js";
-
-const chat = new ChatCommand();
+import { SendMessageCommand, SetChannelCommand } from "../commands/chat.js";
 
 class CommandProcessor {
   static #commands = JSON.parse(fs.readFileSync("./config/commands.json"));
@@ -18,8 +16,8 @@ class CommandProcessor {
     { name: "crypto", object: new CryptoCommand() },
     { name: "snipe", object: new SnipeCommand() },
     { name: "esnipe", object: new EditSnipeCommand() },
-    { name: "chat", object: chat },
-    { name: "channel", object: chat },
+    { name: "chat", object: new SendMessageCommand() },
+    { name: "channel", object: new SetChannelCommand() },
   ];
   static #settings = JSON.parse(fs.readFileSync("./config/bot.json"))[0];
   static #snipeCommandIndex;
