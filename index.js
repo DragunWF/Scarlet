@@ -2,7 +2,7 @@ import "dotenv/config";
 import Discord from "discord.js";
 import fs from "fs";
 
-import CommandProcessor from "./utils/processor.js";
+import CommandProcessor from "./utils/command-processor.js";
 import keepServerRunning from "./utils/server.js";
 import MessageLogger from "./utils/message-logger.js";
 import KeywordResponder from "./utils/keyword-responder.js";
