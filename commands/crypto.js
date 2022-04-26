@@ -2,9 +2,11 @@ import fetch from "node-fetch";
 import Command from "../utils/command.js";
 
 class CryptoCommand extends Command {
+  #coins;
+
   constructor() {
     super();
-    this.coins = [
+    this.#coins = [
       { id: "binancecoin", name: "BNB" },
       { id: "bomber-coin", name: "BCOIN" },
       { id: "smooth-love-potion", name: "SLP" },
@@ -12,7 +14,26 @@ class CryptoCommand extends Command {
     ];
   }
 
-  async fetchCryptoData(id, currency) {
+  async executeCommand(message, args) {
+    try {
+      const cryptoData = [];
+      const currency = args.length ? args[0] : "php";
+      for (let coin of this.#coins)
+        cryptoData.push(await this.#fetchCryptoData(coin.id, currency));
+
+      const description = await this.#concatenateData(cryptoData, currency);
+      const embedOutput = new this.MessageEmbed()
+        .setColor(this.mainColor)
+        .setTitle("Cryptocurrency Values")
+        .setDescription(description)
+        .setFooter({ text: "Data fetched from CoinGecko" });
+      message.channel.send({ embeds: [embedOutput] });
+    } catch (error) {
+      message.channel.send("Unsupported Command Arguments");
+    }
+  }
+
+  async #fetchCryptoData(id, currency) {
     const response = await fetch(
       `https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=${currency}`,
       {
@@ -23,7 +44,7 @@ class CryptoCommand extends Command {
     return await response.json();
   }
 
-  async concatenateData(array, currency) {
+  async #concatenateData(array, currency) {
     let output = "";
     for (let i = 0; i < array.length; i++) {
       const value = array[i][this.coins[i]["id"]][currency]
@@ -35,25 +56,6 @@ class CryptoCommand extends Command {
       }:** \`${value} ${currency.toUpperCase()}\`\n`;
     }
     return output;
-  }
-
-  async sendCryptoData(object, message, args) {
-    try {
-      const cryptoData = [];
-      const currency = args.length ? args[0] : "php";
-      for (let coin of object.coins)
-        cryptoData.push(await object.fetchCryptoData(coin.id, currency));
-
-      const description = await object.concatenateData(cryptoData, currency);
-      const embedOutput = new object.MessageEmbed()
-        .setColor(object.mainColor)
-        .setTitle("Cryptocurrency Values")
-        .setDescription(description)
-        .setFooter({ text: "Data fetched from CoinGecko" });
-      message.channel.send({ embeds: [embedOutput] });
-    } catch (error) {
-      message.channel.send("Unsupported Command Arguments");
-    }
   }
 }
 
