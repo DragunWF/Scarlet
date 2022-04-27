@@ -61,7 +61,6 @@ class CommandProcessor {
           this.#rulerCommandOnly(command);
           break;
         } else {
-          // parameters.push(cmd.object);
           parameters.push(command);
           if (cmd.hasClientObject) parameters.push(client);
           if (cmd.hasArgs) parameters.push(args);
