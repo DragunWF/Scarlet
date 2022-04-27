@@ -1,5 +1,9 @@
 # Scarlet-Bot
 
+![GitHub top language](https://img.shields.io/github/languages/top/DragunWF/Scarlet)
+![Lines of code](https://img.shields.io/tokei/lines/github/DragunWF/Scarlet)
+![GitHub repo size](https://img.shields.io/github/repo-size/DragunWF/Scarlet)
+
 ## Table-of-Contents
 
 - [Description](#description)
