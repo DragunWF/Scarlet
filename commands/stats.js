@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import Command from "../utils/command.js";
+import Tools from "../utils/general-tools.js";
 
 class StatsCommand extends Command {
   constructor() {
@@ -7,8 +8,55 @@ class StatsCommand extends Command {
   }
 
   async executeCommand(message, user) {
-    const stats = await this.#fetchCodeWarsStats();
-    const embed = new this.MessageEmbed();
+    const stats = await this.#fetchCodeWarsStats(user);
+    const embed = new this.MessageEmbed()
+      .setColor("#DC143C") // Crimson Red for CodeWars theme
+      .setAuthor({ name: `${user}'s stats` })
+      .setTitle("CodeWars Stats")
+      .setFields(
+        { name: "Skills", value: this.#concatenateUserSkills(stats.skills) },
+        {
+          name: "Rank",
+          value: this.#formatStatValue(stats.ranks.overall.name),
+          inline: true,
+        },
+        {
+          name: "Honor",
+          value: this.#formatStatValue(
+            Tools.formatNumberWithComma(stats.honor)
+          ),
+          inline: true,
+        },
+        {
+          name: "Clan",
+          value: this.#formatStatValue(this.#formatClan(stats.clan)),
+          inline: true,
+        },
+        {
+          name: "Katas Solved",
+          value: this.#formatStatValue(
+            Tools.formatNumberWithComma(stats.codeChallenges.totalCompleted)
+          ),
+          inline: true,
+        },
+        {
+          name: "Katas Authored",
+          value: this.#formatStatValue(
+            Tools.formatNumberWithComma(stats.codeChallenges.totalAuthored)
+          ),
+          inline: true,
+        },
+        {
+          name: "Leaderboard Position",
+          value: this.#formatStatValue(
+            Tools.formatNumberWithComma(stats.leaderboardPosition)
+          ),
+          inline: true,
+        }
+      )
+      .setFooter({ text: "Data fetched from CodeWars API" })
+      .setTimestamp();
+    message.channel.send({ embeds: [embed] });
   }
 
   async #fetchCodeWarsStats(user) {
@@ -16,6 +64,22 @@ class StatsCommand extends Command {
       `https://www.codewars.com/api/v1/users/${user}`
     );
     return await response.json();
+  }
+
+  #formatStatValue(value) {
+    return `\`${value}\``;
+  }
+
+  #formatClan(clan) {
+    if (!clan) return "Unknown";
+    return clan;
+  }
+
+  #concatenateUserSkills(array) {
+    return array
+      .map((skill) => `\`${skill}\``)
+      .join(", ")
+      .trim();
   }
 }
 
