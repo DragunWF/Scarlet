@@ -30,7 +30,7 @@ class StatsCommand extends Command {
           },
           {
             name: "Clan",
-            value: this.#formatStatValue(this.#formatClan(stats.clan)),
+            value: this.#formatStatValue(this.#checkClan(stats.clan)),
             inline: true,
           },
           {
@@ -78,7 +78,7 @@ class StatsCommand extends Command {
     return `\`${value}\``;
   }
 
-  #formatClan(clan) {
+  #checkClan(clan) {
     return clan ? clan : "Unknown";
   }
 
@@ -89,7 +89,7 @@ class StatsCommand extends Command {
   #concatenateUserSkills(array) {
     return array
       ? array.map((skill) => this.#formatStatValue(skill)).join(", ")
-      : this.#formatStatValue("User did not specify any skills...");
+      : this.#formatStatValue("User has not displayed their skills");
   }
 }
 
