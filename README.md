@@ -39,11 +39,17 @@ is also complete with stored procedures, views, and events for automated mainten
 - `s!snipe`
 - `s!esnipe`
 - `s!crypto <currency>`
+- `s!stats <user>`
 
 ### Ruler_Only_Commands
 
 - `s!set <channel>`
 - `s!send <message>`
+
+### Note
+
+Just in case if anyone is wondering what kind of stats that `s!stats` fetches, the command fetches
+stats from CodeWars specifically.
 
 ## Contact
 
