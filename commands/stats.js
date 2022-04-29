@@ -10,9 +10,9 @@ class StatsCommand extends Command {
   async executeCommand(message, user) {
     const stats = await this.#fetchCodeWarsStats(user);
     const embed = new this.MessageEmbed()
-      .setColor("#DC143C") // Crimson Red for CodeWars theme
-      .setAuthor({ name: `${user}'s stats` })
+      .setColor(this.mainColor)
       .setTitle("CodeWars Stats")
+      .setDescription(`**Username:** ${this.#formatStatValue(user)}`)
       .setFields(
         { name: "Skills", value: this.#concatenateUserSkills(stats.skills) },
         {
