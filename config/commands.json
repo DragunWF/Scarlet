@@ -62,5 +62,13 @@
     "hasClientObject": true,
     "rulerCommand": true,
     "object": null
+  },
+  {
+    "name": "stats",
+    "alias": ["stats", "stat", "codewars"],
+    "hasArgs": true,
+    "hasClientObject": false,
+    "rulerCommand": false,
+    "object": null
   }
 ]
