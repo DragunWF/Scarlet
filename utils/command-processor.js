@@ -4,9 +4,13 @@ import PingCommand from "../commands/ping.js";
 import HelpCommand from "../commands/help.js";
 import InfoCommand from "../commands/info.js";
 import CryptoCommand from "../commands/crypto.js";
-import { SnipeCommand, EditSnipeCommand } from "../commands/snipes.js";
-import { SendMessageCommand, SetChannelCommand } from "../commands/set-and-send.js";
 import StatsCommand from "../commands/stats.js";
+
+import { SnipeCommand, EditSnipeCommand } from "../commands/snipes.js";
+import {
+  SendMessageCommand,
+  SetChannelCommand,
+} from "../commands/set-and-send.js";
 
 class CommandProcessor {
   static #commands = JSON.parse(fs.readFileSync("./config/commands.json"));
@@ -19,7 +23,7 @@ class CommandProcessor {
     { name: "esnipe", object: new EditSnipeCommand() },
     { name: "send", object: new SendMessageCommand() },
     { name: "set", object: new SetChannelCommand() },
-    { name: "stats", object: new StatsCommand() }
+    { name: "stats", object: new StatsCommand() },
   ];
   static #settings = JSON.parse(fs.readFileSync("./config/bot.json"))[0];
   static #snipeCommandIndex;
@@ -65,7 +69,13 @@ class CommandProcessor {
         } else {
           parameters.push(command);
           if (cmd.hasClientObject) parameters.push(client);
-          if (cmd.hasArgs) parameters.push(args);
+          if (cmd.hasArgs) {
+            if (!args.length) {
+              command.channel.send("You forgot to add an argument!");
+              break;
+            }
+            parameters.push(args);
+          }
           cmd.object.executeCommand(...parameters);
           break;
         }
