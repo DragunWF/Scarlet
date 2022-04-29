@@ -50,7 +50,9 @@ class StatsCommand extends Command {
           {
             name: "Leaderboard Position",
             value: this.#formatStatValue(
-              Tools.formatNumberWithComma(stats.leaderboardPosition)
+              Tools.formatNumberWithComma(
+                this.#checkLeaderboardPosition(stats.leaderboardPosition)
+              )
             ),
             inline: true,
           }
@@ -77,12 +79,17 @@ class StatsCommand extends Command {
   }
 
   #formatClan(clan) {
-    if (!clan) return "Unknown";
-    return clan;
+    return clan ? clan : "Unknown";
+  }
+
+  #checkLeaderboardPosition(value) {
+    return value ? value : "None";
   }
 
   #concatenateUserSkills(array) {
-    return array.map((skill) => this.#formatStatValue(skill)).join(", ");
+    return array
+      ? array.map((skill) => this.#formatStatValue(skill)).join(", ")
+      : this.#formatStatValue("User did not specify any skills...");
   }
 }
 
