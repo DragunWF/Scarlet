@@ -1,4 +1,5 @@
 import fs from "fs";
+import Tools from "./general-tools.js";
 
 import PingCommand from "../commands/ping.js";
 import HelpCommand from "../commands/help.js";
@@ -30,6 +31,8 @@ class CommandProcessor {
   static #esnipeCommandIndex;
 
   static onReady() {
+    this.mapCommandExecutions();
+
     let helpCommandIndex;
     for (let i = 0; i < this.#commandExecutions.length; i++) {
       switch (this.#commandExecutions[i].name) {
@@ -48,7 +51,6 @@ class CommandProcessor {
     this.#commandExecutions[helpCommandIndex].object.fillCommandList(
       this.#commands
     );
-    this.mapCommandExecutions();
   }
 
   static processCommand(command, client) {
@@ -92,10 +94,14 @@ class CommandProcessor {
   }
 
   static modifySnipeCommand(isDeletedMessage, message) {
-    const snipe = this.#commandExecutions[this.#snipeCommandIndex].object;
-    const esnipe = this.#commandExecutions[this.#esnipeCommandIndex].object;
-    if (isDeletedMessage) snipe.storeDeletedMessage(message);
-    else esnipe.storeEditedMessage(message.before, message.after);
+    if (isDeletedMessage)
+      this.#commandExecutions[
+        this.#snipeCommandIndex
+      ].object.storeDeletedMessage(message);
+    else
+      this.#commandExecutions[
+        this.#esnipeCommandIndex
+      ].object.storeEditedMessage(message.before, message.after);
   }
 
   static #rulerCommandOnly(message) {
@@ -106,7 +112,7 @@ class CommandProcessor {
       "You can't tell me what to do nerd...",
       `Hey ${message.author.name}, You can't make me run this command...`,
     ];
-    message.reply(responses[Math.floor(Math.random() * responses.length)]);
+    message.reply(Tools.getRandomItemFromArray(responses));
   }
 }
 

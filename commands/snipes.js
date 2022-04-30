@@ -1,5 +1,6 @@
 import Command from "../utils/command.js";
 import MessageLogger from "../utils/message-logger.js";
+import Tools from "../utils/general-tools.js";
 
 export class SnipeCommand extends Command {
   #deletedMessage;
@@ -28,11 +29,7 @@ export class SnipeCommand extends Command {
         "Well that is unfortunate, there is nothing to snipe.",
         "Sorry but I can't snipe anything when I have nothing recorded within my magic.",
       ];
-      message.channel.send(
-        this.noSnipeResponses[
-          Math.floor(Math.random() * noSnipeResponses.length)
-        ]
-      );
+      message.channel.send(Tools.getRandomItemFromArray(noSnipeResponses));
     }
   }
 
@@ -55,32 +52,28 @@ export class EditSnipeCommand extends Command {
       const embed = new this.MessageEmbed()
         .setColor(this.mainColor)
         .setAuthor({
-          name: this.editedMessage.after.author.tag,
-          iconURL: this.editedMessage.after.author.displayAvatarURL(),
+          name: this.#editedMessage.after.author.tag,
+          iconURL: this.#editedMessage.after.author.displayAvatarURL(),
         })
-        .setDescription(this.editedMessage.before.content)
+        .setDescription(this.#editedMessage.before.content)
         .setFooter({ text: "Edited Message" })
         .setTimestamp();
       message.channel.send({ embeds: [embed] });
     } else {
-      const noSnipeResponses = [
+      const noEditSnipeResponses = [
         "I can't find any edited messages sadly...",
         "Sadge, I couldn't find any edited messages...",
         "Sorry but I couldn't find any edited messages within my magic...",
         "There's no edited message to snipe with my magic unfortunately...",
       ];
-      message.channel.send(
-        this.noSnipeResponses[
-          Math.floor(Math.random() * noSnipeResponses.length)
-        ]
-      );
+      message.channel.send(Tools.getRandomItemFromArray(noEditSnipeResponses));
     }
   }
 
   storeEditedMessage(before, after) {
     if (MessageLogger.validateMessageContent(after.content)) {
-      this.editedMessage.after = after;
-      this.editedMessage.before = before;
+      this.#editedMessage.after = after;
+      this.#editedMessage.before = before;
     }
   }
 }
