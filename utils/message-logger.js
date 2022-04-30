@@ -6,7 +6,7 @@ import { MessageEmbed } from "discord.js";
 class MessageLogger {
   static #settings = JSON.parse(fs.readFileSync("./config/bot.json"))[0];
   static #utils = new Command(); // Just for the random embed function
-  static #lastMessageContent = null;
+  static #lastMessageContent;
 
   static validateMessageContent(content, isMessageCreate = false) {
     if (
@@ -54,9 +54,9 @@ class MessageLogger {
 
   static #logToChannel(message, channel, client) {
     const logChannel = client.channels.cache.get(channel);
-    let footerText = null;
-    let description = null;
-    let author = null;
+    let footerText;
+    let description;
+    let author;
 
     if (channel === this.#settings.logChannels.deleted) {
       author = message.author;

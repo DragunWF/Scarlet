@@ -14,8 +14,8 @@ console.log("Database has been connected successfully!");
 class DatabaseTool {
   static insertMessageContent(message, type) {
     const datetime = new Date().toISOString().split("T");
-    let table = null;
-    let content = null;
+    let table;
+    let content;
 
     this.queryNewInfo(message, type);
     this.queryNewUpdates(message, type);

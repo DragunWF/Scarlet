@@ -1,4 +1,5 @@
 import fs from "fs";
+import Tools from "./general-tools";
 
 class KeywordResponder {
   static #data = JSON.parse(fs.readFileSync("./config/keywords.json"));
@@ -42,7 +43,7 @@ class KeywordResponder {
     const responses = isReaction
       ? keywordObject.responses.emojis
       : keywordObject.responses.phrases;
-    return responses[Math.floor(Math.random() * responses.length)];
+    return Tools.getRandomItemFromArray(responses);
   }
 
   static #respondToMessage(message, keywordObject) {

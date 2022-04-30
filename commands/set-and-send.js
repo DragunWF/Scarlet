@@ -1,4 +1,5 @@
 import Command from "../utils/command.js";
+import Tools from "../utils/general-tools.js";
 
 let channel;
 
@@ -16,9 +17,7 @@ export class SendMessageCommand extends Command {
           "Master, you need to set up a channel first before I can talk",
           "A channel needs to be set up first master before I can talk",
         ];
-        message.channel.send(
-          responses[Math.floor(Math.random() * responses.length)]
-        );
+        message.channel.send(Tools.getRandomItemFromArray(responses));
       }
     } catch (err) {
       console.log(err);
@@ -27,9 +26,7 @@ export class SendMessageCommand extends Command {
         "Sorry master, but it seems like I have ran into a problem",
         "Master! I have encountered myself into an error",
       ];
-      message.reply(
-        errorResponses[Math.floor(Math.random() * errorResponses.length)]
-      );
+      message.reply(Tools.getRandomItemFromArray(errorResponses));
     }
   }
 }
@@ -59,8 +56,7 @@ export class SetChannelCommand extends Command {
 
       channel = client.channels.cache.get(channelId[0]);
       if (!channel) message.channel.send("That's an invalid input master!");
-      else
-        message.reply(responses[Math.floor(Math.random() * responses.length)]);
+      else message.reply(Tools.getRandomItemFromArray(responses));
     }
   }
 }
