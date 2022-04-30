@@ -1,4 +1,5 @@
-import { MessageEmbed } from "discord.js";
+import { MessageEmbed, MessageAttachment } from "discord.js";
+import Tools from "./general-tools";
 
 class Command {
   #embedMessageColors;
@@ -6,6 +7,7 @@ class Command {
 
   constructor() {
     this.MessageEmbed = MessageEmbed;
+    this.MessageAttachment = MessageAttachment;
     this.#embedMessageColors = [
       "#0F52BA", // Sappire Blue
       "#9b111e", // Ruby Red
@@ -39,9 +41,7 @@ class Command {
   }
 
   getRandomEmbedColor() {
-    return this.#embedMessageColors[
-      Math.floor(Math.random() * this.#embedMessageColors.length)
-    ];
+    return Tools.getRandomItemFromArray(this.#embedMessageColors);
   }
 }
 
