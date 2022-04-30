@@ -1,5 +1,5 @@
 import { MessageEmbed, MessageAttachment } from "discord.js";
-import Tools from "./general-tools";
+import Tools from "./general-tools.js";
 
 class Command {
   #embedMessageColors;

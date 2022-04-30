@@ -1,5 +1,5 @@
 import fs from "fs";
-import Tools from "./general-tools";
+import Tools from "./general-tools.js";
 
 class KeywordResponder {
   static #data = JSON.parse(fs.readFileSync("./config/keywords.json"));
