@@ -3,7 +3,7 @@ import express from "express";
 const server = express();
 
 server.all("/", (request, response) => {
-  response("Your bot has now been awakened!");
+  response("Scarlet is now awake!");
 });
 
 function keepServerRunning() {
