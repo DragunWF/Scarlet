@@ -53,5 +53,5 @@ stats from CodeWars specifically.
 
 ## Contact
 
-Hello! If you want to contact me you can do so via discord. My discord tag is **DragonWF#9321**. If
+Hello! If you want to contact me you can do so via discord. My discord tag is **dragunwf**. If
 you find any bugs or issues, please report them to me.
