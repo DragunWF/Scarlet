@@ -1,6 +1,6 @@
 import "dotenv/config";
 import Discord from "discord.js";
-import fs from "fs";
+// import fs from "fs";
 
 import CommandProcessor from "./utils/command-processor.js";
 import keepServerRunning from "./utils/server.js";
