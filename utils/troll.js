@@ -1,4 +1,5 @@
 import fs from "fs";
+import Data from "./data.js";
 
 class Troll {
   static #trollRole = "Citizen";
