@@ -3,8 +3,9 @@ import Data from "./data.js";
 
 class Troll {
   static #trollRoleName = "Citizen";
-  static #rangeOfMinutes = { min: 1, max: 1 };
+  static #rangeOfMinutes = { min: 3, max: 8 };
   static #targetIsOnline = false;
+  static #iterations = 0;
 
   static initializeTrolling(messageObj) {
     if (!this.#targetIsOnline) {
@@ -23,16 +24,24 @@ class Troll {
     const trollRole = message.guild.roles.cache.find(
       (role) => role.name === this.#trollRoleName
     );
+    console.log(targetUser);
 
     setTimeout(() => {
       const userHasRole = targetUser.roles.cache.has(trollRole.id);
       if (userHasRole) {
         targetUser.roles.remove(trollRole.id);
+        console.log(
+          `Troll Role added to ${targetUser.username} (${this.#iterations})`
+        );
       } else {
         targetUser.roles.add(trollRole.id);
+        console.log(
+          `Troll Role removed from ${targetUser.username} (${this.#iterations})`
+        );
       }
-      this.#trollJewker(targetID);
-    }, minutes * 60);
+      this.#trollJewker(message, targetID);
+    }, minutes * 2000);
+    this.#iterations++;
   }
 }
 
