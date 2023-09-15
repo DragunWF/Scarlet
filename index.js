@@ -11,7 +11,8 @@ import Troll from "./utils/troll.js";
 
 const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
 // const prefix = JSON.parse(fs.readFileSync("./config/bot.json"))[0].prefix;
-const prefix = Data.getSettings().prefix;
+const settings = Data.getSettings();
+const prefix = settings.prefix;
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -19,7 +20,6 @@ client.on("ready", () => {
     type: "WATCHING",
   });
   CommandProcessor.onReady();
-  Troll.initializeTrolling();
 });
 
 client.on("messageCreate", (message) => {
@@ -29,6 +29,8 @@ client.on("messageCreate", (message) => {
       CommandProcessor.processCommand(message, client);
     KeywordResponder.checkForKeyword(message);
     MessageLogger.logCreatedMessage(message);
+    if (message.author.id === settings.users.jewker)
+      Troll.initializeTrolling(client);
   } catch (error) {
     message.channel.send("**An unknown error has occured**");
     console.log(error);
@@ -59,4 +61,4 @@ client.on("messageUpdate", (oldMessage, newMessage) => {
 });
 
 keepServerRunning();
-client.login(process.env.TOKEN);
+client.login(process.env.TEST);
