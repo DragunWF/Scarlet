@@ -20,6 +20,9 @@ class Troll {
     setTimeout(() => {
       message.guild.roles.find((role) => role.name === this.#trollRole);
       // Implement logic to apply role here (Revenge Time)
+      // Pseudocode
+      // If user already has the role, remove it. If it doesn't add it.
+      // Continually recurse this function within a random range of minutes
       this.trollJewker();
     }, minutes * 60);
   }
