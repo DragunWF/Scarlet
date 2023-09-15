@@ -6,15 +6,15 @@ class Data {
   static #keywords = JSON.parse(fs.readFileSync("./config/keywords.json"));
 
   static getSettings() {
-    return this.#settings;
+    return this.#settings[0];
   }
 
   static getCommands() {
-    return this.#commands;
+    return this.#commands[0];
   }
 
   static getKeywords() {
-    return this.#keywords;
+    return this.#keywords[0];
   }
 }
 
