@@ -29,8 +29,8 @@ client.on("messageCreate", (message) => {
       CommandProcessor.processCommand(message, client);
     KeywordResponder.checkForKeyword(message);
     MessageLogger.logCreatedMessage(message);
-    if (message.author.id === settings.users.jewker)
-      Troll.initializeTrolling(client);
+    if (message.author.id === settings.users.master)
+      Troll.initializeTrolling(message);
   } catch (error) {
     message.channel.send("**An unknown error has occured**");
     console.log(error);
