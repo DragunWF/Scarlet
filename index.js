@@ -6,9 +6,12 @@ import CommandProcessor from "./utils/command-processor.js";
 import keepServerRunning from "./utils/server.js";
 import MessageLogger from "./utils/message-logger.js";
 import KeywordResponder from "./utils/keyword-responder.js";
+import Data from "./utils/data.js";
+import Troll from "./utils/troll.js";
 
 const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
-const prefix = JSON.parse(fs.readFileSync("./config/bot.json"))[0].prefix;
+// const prefix = JSON.parse(fs.readFileSync("./config/bot.json"))[0].prefix;
+const prefix = Data.getSettings().prefix;
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -16,6 +19,7 @@ client.on("ready", () => {
     type: "WATCHING",
   });
   CommandProcessor.onReady();
+  Troll.initializeTrolling();
 });
 
 client.on("messageCreate", (message) => {
