@@ -27,3 +27,5 @@ class Troll {
     }, minutes * 60);
   }
 }
+
+export default Troll;
