@@ -10,7 +10,6 @@ import Data from "./utils/data.js";
 import Troll from "./utils/troll.js";
 
 const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
-// const prefix = JSON.parse(fs.readFileSync("./config/bot.json"))[0].prefix;
 const settings = Data.getSettings();
 const prefix = settings.prefix;
 
