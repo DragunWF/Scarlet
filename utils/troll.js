@@ -27,6 +27,7 @@ class Troll {
     console.log(targetUser);
 
     setTimeout(() => {
+      // Fix Bug later. (TargetUser is null)
       const userHasRole = targetUser.roles.cache.has(trollRole.id);
       if (userHasRole) {
         targetUser.roles.remove(trollRole.id);
