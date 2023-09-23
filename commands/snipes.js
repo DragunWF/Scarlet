@@ -27,7 +27,7 @@ export class SnipeCommand extends Command {
         "Better luck next time I guess, seems like my spell missed.",
         "Sorry, but there is nothing for me to use my magic on.",
         "Well that is unfortunate, there is nothing to snipe.",
-        "Sorry but I can't snipe anything when I have nothing recorded within my magic.",
+        "Sorry but I can't snipe anything when I have nothing recorded within my magical records.",
       ];
       message.channel.send(Tools.getRandomItemFromArray(noSnipeResponses));
     }
