@@ -1,6 +1,5 @@
 import "dotenv/config";
 import Discord from "discord.js";
-// import fs from "fs";
 
 import CommandProcessor from "./utils/command-processor.js";
 import keepServerRunning from "./utils/server.js";
@@ -19,6 +18,7 @@ client.on("ready", () => {
     type: "WATCHING",
   });
   CommandProcessor.onReady();
+  Troll.showStatus();
 });
 
 client.on("messageCreate", (message) => {
@@ -28,8 +28,10 @@ client.on("messageCreate", (message) => {
       CommandProcessor.processCommand(message, client);
     KeywordResponder.checkForKeyword(message);
     MessageLogger.logCreatedMessage(message);
-    if (message.author.id === settings.users.master)
+    if (message.author.id === settings.users.master) {
       Troll.initializeTrolling(message);
+      Troll.showStatus();
+    }
   } catch (error) {
     message.channel.send("**An unknown error has occured**");
     console.log(error);
