@@ -6,13 +6,21 @@ class Troll {
   static #rangeOfMinutes = { min: 3, max: 8 };
   static #targetIsOnline = false;
   static #iterations = 0;
+  static #trollModeOn = false;
 
   static initializeTrolling(messageObj) {
     if (!this.#targetIsOnline) {
+      this.#trollModeOn = true;
       this.#targetIsOnline = true;
       this.#trollJewker(messageObj, messageObj.author.id);
       console.log("Trolling has been initialized!");
     }
+  }
+
+  static showStatus() {
+    console.log(`Troll Mode: ${this.#trollModeOn}`);
+    console.log(`Target is Online: ${this.#targetisOnline}`);
+    console.log(`Iterations: ${iterations}`);
   }
 
   static #trollJewker(message, targetID) {
@@ -40,7 +48,9 @@ class Troll {
           `Troll Role removed from ${targetUser.username} (${this.#iterations})`
         );
       }
-      this.#trollJewker(message, targetID);
+      if (this.#trollModeOn) {
+        this.#trollJewker(message, targetID);
+      }
     }, minutes * 2000);
     this.#iterations++;
   }
