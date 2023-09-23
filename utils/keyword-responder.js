@@ -30,7 +30,7 @@ class KeywordResponder {
     if (keywordObject.hasReaction) {
       if (hasPhrases && hasEmojis) {
         const chance = Math.floor(Math.random() * 2) + 1;
-        if (chance == 1) return true;
+        if (chance === 1) return true;
         else return false;
       }
       if (hasPhrases) return false;
