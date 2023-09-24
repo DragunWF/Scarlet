@@ -8,6 +8,10 @@ class Tools {
     return array[Math.floor(Math.random() * array.length)];
   }
 
+  static getTimeFromDate(dateString) {
+    return dateString.split(" ")[0];
+  }
+
   static getRandomInt(max) {
     return Math.floor(Math.random * max);
   }
