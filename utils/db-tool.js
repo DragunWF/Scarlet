@@ -1,4 +1,5 @@
 import "dotenv/config";
+import Tools from "./general-tools.js";
 import mysql from "mysql";
 
 const db = mysql.createPool({
@@ -29,7 +30,7 @@ class DatabaseTool {
           author_id: message.author.id,
           message_content: this.#filterUnsupportedCharacters(message.content),
           date_sent: datetime[0],
-          time_sent: datetime[1].split(".")[0],
+          time_sent: Tools.getTimeFromDate(datetime),
         };
         table = "messages";
         break;
@@ -41,7 +42,7 @@ class DatabaseTool {
           author_id: message.author.id,
           message_content: this.#filterUnsupportedCharacters(message.content),
           date_deleted: datetime[0],
-          time_deleted: datetime[1].split(".")[0],
+          time_deleted: Tools.getTimeFromDate(datetime),
         };
         table = "deleted_messages";
         break;
@@ -58,7 +59,7 @@ class DatabaseTool {
             message.after.content
           ),
           date_edited: datetime[0],
-          time_edited: datetime[1].split(".")[0],
+          time_edited: Tools.getTimeFromDate(datetime),
         };
         table = "edited_messages";
         break;
@@ -83,7 +84,10 @@ class DatabaseTool {
       this.#filterUnsupportedCharacters(message.author.tag),
     ];
     db.query("CALL insert_new_info(?,?,?,?,?,?)", parameters, (err, result) => {
-      if (err) console.log(err);
+      if (err) {
+        console.log(err);
+        console.log("Result:", result);
+      }
     });
   }
 
